@@ -1,0 +1,56 @@
+/* Container using grid layout */
+.container {
+    display: grid;
+    grid-template-columns: 40% 1fr; /* 25% for header, rest for login screen */
+    grid-template-rows: auto 30px; /* Auto row for main content, 50px for footer */
+    grid-template-areas: 
+        "header login"
+        "header footer";
+    height: 100vh; /* Full screen height */
+}
+
+/* Header style */
+.header {
+    grid-area: header;
+    background-color: #300707;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Login screen style */
+.login {
+    grid-area: login;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+/* Footer style */
+.footer {
+    
+    grid-area: footer;
+    background-color: #540b0b;
+    color: white;
+    text-align: center;
+    
+    
+        
+    
+}
+
+.subbtn{
+    border-style: groove;
+    background-color: hsl(0, 75%, 11%);
+    color: #f4f4f4;
+    padding-left: 40%;
+    padding-right: 40%;
+    border-radius: 10px;
+
+}
+.subbtn:hover{
+    background-color: #611313;
+    
+}
