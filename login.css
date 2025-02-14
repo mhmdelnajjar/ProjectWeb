@@ -7,6 +7,7 @@
         "header login"
         "header footer";
     height: 100vh; /* Full screen height */
+    
 }
 
 /* Header style */
@@ -16,6 +17,8 @@
     color: white;
     padding: 20px;
     text-align: center;
+    
+
 }
 
 /* Login screen style */
@@ -53,4 +56,11 @@
 .subbtn:hover{
     background-color: #611313;
     
+}
+
+form{
+    border-style:inset;
+    border-width: 6px;
+    padding: 15px;
+    border-radius: 5%;
 }
