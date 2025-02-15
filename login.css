@@ -1,5 +1,6 @@
 /* Container using grid layout */
-.container {
+@media screen and (min-width: 400px)
+{.container {
     display: grid;
     grid-template-columns: 40% 1fr; /* 25% for header, rest for login screen */
     grid-template-rows: auto 30px; /* Auto row for main content, 50px for footer */
@@ -7,13 +8,13 @@
         "header login"
         "header footer";
     height: 100vh; /* Full screen height */
-    
+}
 }
 
 /* Header style */
 .header {
     grid-area: header;
-    background-color: #300707;
+    background-color: #340202;
     color: white;
     padding: 20px;
     text-align: center;
@@ -68,4 +69,24 @@ form{
 .heads{
     padding-top: 180px;
    
+}
+
+@media screen and (max-width: 400px) {
+    .container {
+        display: grid;
+        grid-template-columns: 1fr; /* Make it a single column */
+        grid-template-rows: 0.5fr 1fr auto; /* Header, Login, Footer */
+        grid-template-areas: 
+            "header"
+            "login"
+            "footer";
+    }
+
+    .header {
+        background-color: #340202;
+        color: white;
+        text-align: center;
+        
+    
+    }
 }
