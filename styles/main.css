@@ -35,6 +35,7 @@
 }
 
 body {
+    height: 100vh;
     background-color: var(--color-background);
     transition: all ease 250ms;
 }
@@ -44,11 +45,26 @@ p {
     color: var(--color-text);
 }
 
+header img {
+    width: 10em;
+    height: auto;
+    filter: invert(1) sepia(1) saturate(0.5) hue-rotate(305deg);
+    margin-right: auto;
+}
+
 h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); 
     text-align: center;
     font-size: 1.4em;
-    background-color: var(--color-link);
     color: var(--falu-red-light);
+    padding: 1em;
+}
+
+#title {
+    display: flex;
+    background-color: var(--color-link);
     padding: 1em;
     border-bottom: 3px outset white;
 }
@@ -78,7 +94,7 @@ nav ul li:hover {
 
 main {
     padding: 1em;
-    min-height: 70vh;
+    min-height: 50vh;
 }
 
 form {

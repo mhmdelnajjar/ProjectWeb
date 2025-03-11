@@ -1,68 +1,94 @@
 @import url("./reset.css");
 
-/* Container using grid layout */
-@media screen and (min-width: 768px)
-{.container {
+:root {
+    /* color palette using custom properties (cascading variables) */
+    --falu-red: #801c1c;
+    --falu-red-light: #fef2f2;
+    --falu-red-bright: #9a1a1a;
+    
+    --falu-red-dark: #460909;
+    --dark-grey: #121212;
+}
+
+@media screen and (prefers-color-scheme: light) {
+    :root {
+        --color-background: var(--falu-red-light);
+        --color-text: var(--dark-grey);
+        --color-link: var(--falu-red);
+        --color-link-hover: var(--falu-red-bright);
+        --color-link-active: var(--falu-red-dark);
+    }
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        --color-background: var(--dark-grey);
+        --color-text: var(--falu-red-light);
+        --color-link: var(--falu-red-dark);
+        --color-link-hover: var(--falu-red-bright);
+        --color-link-active: var(--falu-red)
+    }
+}
+
+body {
+    background-color: var(--color-background);
+    transition: all ease 250ms;
+}
+
+.container {
     display: grid;
-    grid-template-columns: 40% 1fr; /* 25% for header, rest for login screen */
-    grid-template-rows: auto 30px; /* Auto row for main content, 50px for footer */
+    grid-template-columns: 1fr; /* Make it a single column */
+    grid-template-rows: 0.5fr 2fr auto; /* Header, Login, Footer */
     grid-template-areas: 
-        "header login"
-        "header footer";
-    height: 100vh; /* Full screen height */
-}
-.heads{
-    padding-top: 180px;
-   
+    "header"
+    "login"
+    "footer";
+    height: 100vh;
 }
 
-}
-
-/* Header style */
-.header {
+header {
     grid-area: header;
-    background-color: #340202;
-    color: white;
+    background-color: var(--color-link);
+    color: var(--falu-red-light);
     padding: 20px;
     text-align: center;
-    
-
 }
 
-/* Login screen style */
+.heads img {
+    width: 15em;
+    height: auto;
+    filter: invert(1) sepia(1) saturate(0.5) hue-rotate(305deg);
+    margin-right: auto;
+}
+
 .login {
     grid-area: login;
-    background-color: #f4f4f4;
+    background-color: var(--color-background);
     display: flex;
     justify-content: center;
     align-items: center;
     
 }
 
-/* Footer style */
 .footer {
     
     grid-area: footer;
-    background-color: #540b0b;
-    color: white;
+    background-color: var(--color-link);
+    color: var(--falu-red-light);
     text-align: center;
-    
-    
-        
-    
 }
 
 .subbtn{
     border-style: groove;
-    background-color: hsl(0, 75%, 11%);
-    color: #f4f4f4;
+    background-color: var(--color-link-active);
+    color: var(--falu-red-light);
     padding-left: 40%;
     padding-right: 40%;
     border-radius: 10px;
-
+    
 }
 .subbtn:hover{
-    background-color: #611313;
+    background-color: var(--color-link-hover);
     
 }
 
@@ -74,23 +100,22 @@ form{
     
 }
 
-
-@media screen and (max-width: 767px) {
+/* Container using grid layout */
+@media screen and (min-width: 768px){
     .container {
         display: grid;
-        grid-template-columns: 1fr; /* Make it a single column */
-        grid-template-rows: 0.5fr 2fr auto; /* Header, Login, Footer */
+        grid-template-columns: 40% 1fr; /* 25% for header, rest for login screen */
+        grid-template-rows: auto 30px; /* Auto row for main content, 50px for footer */
         grid-template-areas: 
-            "header"
-            "login"
-            "footer";
+            "header login"
+            "header footer";
+        height: 100vh; /* Full screen height */
+    }
+    .heads{
+        padding-top: 180px;
     }
 
-    .header {
-        background-color: #340202;
-        color: white;
-        text-align: center;
-        
-    
+    .heads img {
+        width: 25em;
     }
 }
