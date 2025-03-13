@@ -163,6 +163,13 @@ footer {
     align-items: center;
     color: var(--falu-red-light);
     text-decoration: none;
+    padding: 5px;
+}
+
+#socials a:hover {
+    transform: translateY(-2px) ;
+    border: solid 1px rgb(92, 29, 29);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
 #socials a img {
