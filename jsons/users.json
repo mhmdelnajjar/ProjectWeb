@@ -1,0 +1,21 @@
+[
+{
+"userType": "student",
+"username":"abood",
+"password":"123"
+
+},
+{
+    "userType": "instructor",
+    "username":"abdullahi",
+    "password":"123"
+    
+    },
+    {
+        "userType": "admin",
+        "username":"amr",
+        "password":"123"
+        
+        }
+
+]

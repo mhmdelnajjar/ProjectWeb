@@ -1,3 +1,7 @@
+* {
+    padding: auto;
+    margin: auto;
+}
 @import url("./reset.css");
 
 :root {
@@ -123,7 +127,7 @@ form *{
 }
 
 .search-btn img {
-    width: 1.3em;
+    width: 1.5em;
     height: 1.3em;
     filter: invert(1) sepia(1) saturate(2) hue-rotate(300deg);
 }
@@ -180,37 +184,3 @@ footer {
 #contact p{
     color: var(--falu-red-light);
 }
-
-.card {
-    background:var(--color-background);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-
-  }
-  .card img {
-    width: 150px;
-    height: 100px;
-    border-radius: 5px;
-    margin-right: 20px;
-    object-fit: cover;
-  }
-   
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-  .cards{
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-  }
-.h2 {
-
- text-align: center;
- color: white;
-
-  }
