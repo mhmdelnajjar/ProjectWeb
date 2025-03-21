@@ -1,7 +1,4 @@
-* {
-    padding: auto;
-    margin: auto;
-}
+
 @import url("./reset.css");
 
 :root {
@@ -85,11 +82,18 @@ nav ul {
     background-color: var(--color-link);
 }
 
+nav ul li {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
 nav ul li a {
     color: var(--falu-red-light);
     text-decoration: none;
     padding: 1em;
     display: inline-block;
+    width: 100%;
 }
 
 nav ul li:hover {

@@ -20,6 +20,7 @@
         --color-link-active: var(--falu-red-dark);
         --color-card: var(--falu-red-200);
         --color-shadow: rgba(0, 0, 0, 0.1);
+        --color-highlight: var(--falu-red);
     }
 }
 
@@ -32,6 +33,7 @@
         --color-link-active: var(--falu-red);
         --color-card: var(--falu-red);
         --color-shadow: rgba(255, 255, 255, 0.1);
+        --color-highlight: var(--falu-red-200);
     }
 }
 
@@ -50,7 +52,7 @@ p {
     color: var(--color-text);
 }
 
-header img {
+#title img {
     width: 10em;
     height: auto;
     filter: invert(1) sepia(1) saturate(0.5) hue-rotate(305deg);
@@ -88,11 +90,66 @@ nav ul {
     background-color: var(--color-link);
 }
 
-nav ul li a {
+nav ul li {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+nav ul li a, .learning-path-dropdown{
     color: var(--falu-red-light);
     text-decoration: none;
     padding: 1em;
     display: inline-block;
+    width: 100%;
+}
+
+.menu-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav img {
+    width: 1em;
+    filter: invert(1) sepia(1) saturate(2) hue-rotate(300deg);
+    margin-right: 0.5em;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    background-color: var(--color-card);
+    box-shadow: 0 4px 8px var(--color-shadow);
+    border-radius: 0 0 5px 5px;
+    min-width: 150px;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px 0;
+    color: #333;
+    text-decoration: none;
+    width: 100%;
+    color: var(--color-text);
+}
+
+.dropdown a:hover {
+    background-color: var(--color-highlight);
+    color: var(--color-background);
+    width: 
+}
+
+.learning-path-dropdown:hover .dropdown {
+    display: block;
+}
+
+.dropdown a:last-child {
+    border-radius: 0 0 5px 5px;
 }
 
 nav ul li:hover {
@@ -107,6 +164,7 @@ main {
 form {
     display: flex;
     align-items: center;
+    padding-bottom: 5em
 }
 
 form *{
