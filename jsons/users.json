@@ -2,7 +2,22 @@
 {
 "userType": "student",
 "username":"abood",
-"password":"123"
+"password":"123", 
+"courses":[
+    {
+        "name":"Object-Oriented Programming Principles",
+        "code":"CS101",
+        "instructor":"Omar Al-Farouq",
+        "grade":""
+    },
+    {
+        "name":"Introduction to Programming",
+        "code":"CM101",
+        "instructor":"Omar Al-Farouq",
+        "grade":"A"
+    }
+
+]
 
 },
 {

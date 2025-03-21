@@ -1,7 +1,7 @@
  [
       {
         "course_name": "Object-Oriented Programming Principles",
-        "course_instructor": "Dr. Omar Al-Farouq",
+        "course_instructor": "Omar Al-Farouq",
         "course_number": "CS101",
         "capacity": 100,
         "category": "OOP",
@@ -55,7 +55,7 @@
       },
       {
         "course_name": "Introduction to Programming",
-        "course_instructor": "Dr. Omar Al-Farouq",
+        "course_instructor": "Omar Al-Farouq",
         "course_number": "CM101",
         "capacity": 100,
         "category": "Programming",

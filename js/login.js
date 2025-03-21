@@ -29,12 +29,13 @@ function validateUsers(usernameLogged,passwordLogged,users){
 
     if(isFound){
         if (isFound.userType =="admin") {
-            window.location.href ="admin.html"
+
+        window.location.href = `admin.html?username=${encodeURIComponent(usernameLogged)}`;
         } else if (isFound.userType =="student") {
-            window.location.href ="main.html"
+            window.location.href = `main.html?username=${encodeURIComponent(usernameLogged)}`;
 
         } else if (isFound.userType=="instructor") {
-            window.location.href ="inst.html"
+            window.location.href = `main.html?username=${encodeURIComponent(usernameLogged)}`;
 
             
         } else {
