@@ -99,7 +99,7 @@ nav ul li {
 nav ul li a, .learning-path-dropdown{
     color: var(--falu-red-light);
     text-decoration: none;
-    padding: 1em;
+    padding: 1em 0;
     display: inline-block;
     width: 100%;
 }
@@ -141,7 +141,6 @@ nav img {
 .dropdown a:hover {
     background-color: var(--color-highlight);
     color: var(--color-background);
-    width: 
 }
 
 .learning-path-dropdown:hover .dropdown {

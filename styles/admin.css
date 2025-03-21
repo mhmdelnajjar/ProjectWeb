@@ -90,7 +90,7 @@ nav ul li {
 nav ul li a {
     color: var(--falu-red-light);
     text-decoration: none;
-    padding: 1em;
+    padding: 1em 0;
     display: inline-block;
     width: 100%;
 }
