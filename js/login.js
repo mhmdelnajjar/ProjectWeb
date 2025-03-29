@@ -23,7 +23,7 @@ async function handleLogin(e) {
 
 
 function validateUsers(usernameLogged,passwordLogged,users){
-    const isFound = users.find(user => 
+    const isFound = users.usersArray.find(user => 
         user.username === usernameLogged && user.password === passwordLogged
     );
 

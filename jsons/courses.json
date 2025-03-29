@@ -1,67 +1,37 @@
- [
+{
+  "courses": [
       {
-        "course_name": "Object-Oriented Programming Principles",
-        "course_instructor": "Omar Al-Farouq",
-        "course_number": "CS101",
-        "capacity": 100,
-        "category": "OOP",
-        "prerequisite": "Introduction to Programming",
-        "image": "https://miro.medium.com/v2/resize:fit:1200/1*ENym9k9bNQkkyCe5zdwucA.png"
+          "course_name": "Introduction to Programming",
+          "course_number": "CM101",
+          "course_instructor": "Omar Al-Farouq",
+          "capacity": 100,
+          "registeredStudents": 0,
+          "isOpen": true,
+          "category": "Programming",
+          "prerequisite": "",
+          "image": "https://example.com/intro-programming.jpg"
       },
       {
-        "course_name": "Advanced Object-Oriented Design Patterns",
-        "course_instructor": "Prof. Aisha Al-Mansouri",
-        "course_number": "CS201",
-        "capacity": 80,
-        "category": "OOP",
-        "prerequisite": "Object-Oriented Programming Principles",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
+          "course_name": "Object-Oriented Programming Principles",
+          "course_number": "CS101",
+          "course_instructor": "Omar Al-Farouq",
+          "capacity": 100,
+          "registeredStudents": 25,
+          "isOpen": true,
+          "category": "OOP",
+          "prerequisite": "CM101",
+          "image": "https://example.com/oop-principles.jpg"
       },
       {
-        "course_name": "Database Management Systems",
-        "course_instructor": "Dr. Khalid Al-Yousef",
-        "course_number": "CS301",
-        "capacity": 120,
-        "category": "Database",
-        "prerequisite": "Data Structures",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
-      },
-      {
-        "course_name": "SQL and NoSQL Databases",
-        "course_instructor": "Dr. Fatima Al-Habib",
-        "course_number": "CS302",
-        "capacity": 90,
-        "category": "Database",
-        "prerequisite": "Database Management Systems",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
-      },
-      {
-        "course_name": "OOP in Java",
-        "course_instructor": "Dr. Youssef Al-Mahdi",
-        "course_number": "CS202",
-        "capacity": 85,
-        "category": "OOP",
-        "prerequisite": "Object-Oriented Programming Principles",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
-      },
-      {
-        "course_name": "Big Data and Scalable Databases",
-        "course_instructor": "Prof. Layla Al-Fadhil",
-        "course_number": "CS401",
-        "capacity": 75,
-        "category": "Database",
-        "prerequisite": "SQL and NoSQL Databases",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
-      },
-      {
-        "course_name": "Introduction to Programming",
-        "course_instructor": "Omar Al-Farouq",
-        "course_number": "CM101",
-        "capacity": 100,
-        "category": "Programming",
-        "prerequisite": "",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
+          "course_name": "Advanced Object-Oriented Design Patterns",
+          "course_number": "CS201",
+          "course_instructor": "Prof. Aisha Al-Mansouri",
+          "capacity": 80,
+          "registeredStudents": 70,
+          "isOpen": false,
+          "category": "OOP",
+          "prerequisite": "CS101",
+          "image": "https://example.com/design-patterns.jpg"
       }
-    ]
-  
-  
+  ]
+}

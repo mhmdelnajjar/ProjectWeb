@@ -1,36 +1,28 @@
-[
 {
-"userType": "student",
-"username":"abood",
-"password":"123", 
-"courses":[
-    {
-        "name":"Object-Oriented Programming Principles",
-        "code":"CS101",
-        "instructor":"Omar Al-Farouq",
-        "grade":""
-    },
-    {
-        "name":"Introduction to Programming",
-        "code":"CM101",
-        "instructor":"Omar Al-Farouq",
-        "grade":"A"
-    }
-
-]
-
-},
-{
-    "userType": "instructor",
-    "username":"abdullahi",
-    "password":"123"
-    
-    },
-    {
-        "userType": "admin",
-        "username":"amr",
-        "password":"123"
-        
+    "usersArray": [
+        {
+            "userType": "student",
+            "username": "abood",
+            "password": "123",
+            "completedCourses": [
+                {
+                    "course_number": "CM101",
+                    "grade": "A"
+                }
+            ],
+            "currentCourses": [],
+            "pendingCourses": []
+        },
+        {
+            "userType": "instructor",
+            "username": "abdullahi",
+            "password": "123",
+            "assignedCourses": ["CS101", "CS201"]
+        },
+        {
+            "userType": "admin",
+            "username": "amr",
+            "password": "123"
         }
-
-]
+    ]
+}

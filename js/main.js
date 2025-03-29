@@ -1,7 +1,13 @@
 console.log("connected");
-let currCourses = []
-let completedcourses = []
-let pendingCourses =[]
+
+let studentCourses = {
+  completed: [],
+  current: [],
+  pending: []
+};
+// Add this at the beginning of your main.js file (before any functions that use it)
+
+let isRegistrationView = false
 let courses = [];
 const textField = document.querySelector("#cards");
 const search = document.querySelector("#searchBar");
@@ -14,29 +20,59 @@ function getQueryParam(param) {
     return urlParams.get(param);
 }
 
-//load current coureses
-async function loadCurrent() {
-    const req = await fetch("/jsons/users.json");
-        const res = await req.json();
-        const array = res.filter(e=>e.username==usernameGetten)
-         const array2 = array.flatMap(user => user.courses);   
-         currCourses = array2.filter(e=>e.grade=="")  
-     
-         
-}
-// load completed courses
-async function loadCompleted() {
-    const req = await fetch("/jsons/users.json");
-        const res = await req.json();
-        const array = res.filter(e=>e.username==usernameGetten)
-         const array2 = array.flatMap(user => user.courses);   
-         completedcourses = array2.filter(e=>e.grade!="")
+async function getStudentCourses(usernameGetten) {
+    try {
+        // Fetch user data
+        const req = await fetch("jsons/users.json");
+        const users = await req.json();
+        const student = users.usersArray.find(s => s.username === usernameGetten);
+
+        if (!student || student.userType !== "student") {
+            console.log("Student not found or not a student account");
+            return [];
+        }
+
+        // Fetch all courses
+        const coursesReq = await fetch("jsons/courses.json");
+        const coursesData = await coursesReq.json();
         
-             
-           
+        // Get all courses related to the student (completed, current, and pending)
+        const allStudentCourses = [
+            ...(student.completedCourses || []),
+            ...(student.currentCourses || []),
+            ...(student.pendingCourses || [])
+        ];
+
+        // Get full course details for each student course
+        const studentCoursesWithDetails = allStudentCourses.map(studentCourse => {
+            const fullCourseDetails = coursesData.courses.find(
+                c => c.course_number === studentCourse.course_number
+            );
+            
+            // Determine status
+            let status = "Pending";
+            if (student.completedCourses?.some(c => c.course_number === studentCourse.course_number)) {
+                status = "Completed";
+            } else if (student.currentCourses?.some(c => c.course_number === studentCourse.course_number)) {
+                status = "Enrolled";
+            }
+
+            // Merge student-specific data with course details
+            return {
+                ...studentCourse,
+                ...fullCourseDetails,
+                status: studentCourse.status || status
+            };
+        });
+
+        return studentCoursesWithDetails;
+
+    } catch (error) {
+        console.error("Error fetching student courses:", error);
+        return [];
+    }
 }
 
-// Load courses from localStorage or fetch from JSON
 async function loadCourse() {
     if (localStorage.courses) {
         courses = JSON.parse(localStorage.courses);
@@ -51,13 +87,21 @@ async function loadCourse() {
 
 // Function to display courses as cards
 function displayCourses(filteredCourses) {
+
+    if (isRegistrationView == false) {
     textField.innerHTML = filteredCourses.length 
         ? returnCards(filteredCourses) 
         : "<p>No courses found</p>";
+    } else {
+        textField.innerHTML = filteredCourses.length 
+        ? returnCardsForReg(filteredCourses) 
+        : "<p>No courses found</p>";
+    }
 }
 
 // Function to return HTML for course cards
 function returnCards(courses) {
+    if (isRegistrationView==false){
     return courses.map(e => `
         <fieldset>
             <div class="card">
@@ -71,27 +115,88 @@ function returnCards(courses) {
                 </div>
             </div>
         </fieldset>
-    `).join("");
+    `).join("");}
 }
-function returnCards2(courses) {
-    return courses.map((e,index) => `
-        <fieldset>
-            <div class="card">
-                <img class="img1" src="${e.image}" alt="${e.course_name}">
+
+function returnCardsForReg(courses) {
+    return courses.map((course, index) => `
+        <fieldset class="course-card">
+            <div class="card" onclick="showCourseDetails(${index})">
+                <img class="img1" src="${course.image}" alt="${course.course_name}">
                 <div class="words">
-                    <h3>${e.course_name}</h3>
-                    <h4>${e.course_number}</h4>
-                    <p>${e.prerequisite}</p>
-                    <p>${e.category}</p>
-                    <div>${e.capacity}</div>
+                    <h3>${course.course_name}</h3>
+                    <h4>${course.course_number}</h4>
+                    <p><strong>Instructor:</strong> ${course.course_instructor}</p>
+                    <p><strong>Schedule:</strong> ${course.schedule || 'Not specified'}</p>
+                    <p><strong>Available Seats:</strong> ${course.capacity - (course.registeredStudents || 0)}/${course.capacity}</p>
                 </div>
- <button class="details-btn" onclick="addToReg(${index})">Register</button> 
-  <button class="details-btn" onclick="showDetials(${index})">Show Details</button>
-             </div>
+                <button class="register-btn" onclick="event.stopPropagation(); addToReg(${index})">
+                    Register
+                </button>
+            </div>
         </fieldset>
     `).join("");
 }
-// Search filter function
+
+let currentModal = null;
+
+function showCourseDetails(index) {
+    const course = courses[index];
+    
+    const modal = document.createElement('div');
+    modal.className = 'course-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>${course.course_name} Details</h2>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="course-image">
+                    <img src="${course.image}" alt="${course.course_name}">
+                </div>
+                <div class="course-info">
+                    <p><strong>Course Code:</strong> ${course.course_number}</p>
+                    <p><strong>Instructor:</strong> ${course.course_instructor}</p>
+                    <p><strong>Description:</strong> ${course.description || 'No description available'}</p>
+                    <p><strong>Prerequisites:</strong> ${course.prerequisite || 'None'}</p>
+                    <p><strong>Schedule:</strong> ${course.schedule || 'Not specified'}</p>
+                    <p><strong>Credits:</strong> ${course.credits || 'N/A'}</p>
+                    <p><strong>Department:</strong> ${course.department || 'General'}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-register-btn" onclick="addToReg(${index}); closeModal()">
+                    Register Now
+                </button>
+                <button class="modal-back-btn" onclick="closeModal()">
+                    Back to Courses
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    currentModal = modal;
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    if (currentModal) {
+        document.body.removeChild(currentModal);
+        currentModal = null;
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function addToReg(index) {
+    const course = courses[index];
+    console.log(`Registering for ${course.course_name}`);
+    isRegistrationView = false;
+    displayCourses(courses);
+    closeModal();
+}
+function allEventListners() {
 search.addEventListener("input", function () {
     const searchText = search.value.toLowerCase();
     const filteredCourses = courses.filter(course => 
@@ -102,14 +207,16 @@ search.addEventListener("input", function () {
     displayCourses(filteredCourses);
 });
 
-
-// Load courses when the script runs
-loadCourse();
-loadCurrent();
-loadCompleted();
-regBtn.addEventListener("click",function() {
-
-textField.innerHTML = returnCards2(courses)
-
-
+regBtn.addEventListener("click", function(e) {
+    e.preventDefault()
+    isRegistrationView = true;
+    textField.innerHTML = returnCardsForReg(courses);
+    
 })
+}
+
+
+
+
+loadCourse();
+allEventListners();
