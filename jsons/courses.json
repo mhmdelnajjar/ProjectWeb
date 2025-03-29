@@ -1,37 +1,114 @@
 {
-  "courses": [
+    "courses": [
       {
-          "course_name": "Introduction to Programming",
-          "course_number": "CM101",
-          "course_instructor": "Omar Al-Farouq",
-          "capacity": 100,
-          "registeredStudents": 0,
-          "isOpen": true,
-          "category": "Programming",
-          "prerequisite": "",
-          "image": "https://example.com/intro-programming.jpg"
+        "course_name": "Introduction to Programming",
+        "course_number": "CM101",
+        "course_instructor": "Omar Al-Farouq",
+        "capacity": 100,
+        "registeredStudents": 0,
+        "isOpen": true,
+        "category": "Programming",
+        "prerequisite": "",
+        "image": "https://example.com/intro-programming.jpg"
       },
       {
-          "course_name": "Object-Oriented Programming Principles",
-          "course_number": "CS101",
-          "course_instructor": "Omar Al-Farouq",
-          "capacity": 100,
-          "registeredStudents": 25,
-          "isOpen": true,
-          "category": "OOP",
-          "prerequisite": "CM101",
-          "image": "https://example.com/oop-principles.jpg"
+        "course_name": "Object-Oriented Programming Principles",
+        "course_number": "CS101",
+        "course_instructor": "Omar Al-Farouq",
+        "capacity": 100,
+        "registeredStudents": 25,
+        "isOpen": true,
+        "category": "OOP",
+        "prerequisite": "CM101",
+        "image": "https://example.com/oop-principles.jpg"
       },
       {
-          "course_name": "Advanced Object-Oriented Design Patterns",
-          "course_number": "CS201",
-          "course_instructor": "Prof. Aisha Al-Mansouri",
-          "capacity": 80,
-          "registeredStudents": 70,
-          "isOpen": false,
-          "category": "OOP",
-          "prerequisite": "CS101",
-          "image": "https://example.com/design-patterns.jpg"
+        "course_name": "Advanced Object-Oriented Design Patterns",
+        "course_number": "CS201",
+        "course_instructor": "Prof. Aisha Al-Mansouri",
+        "capacity": 80,
+        "registeredStudents": 70,
+        "isOpen": false,
+        "category": "OOP",
+        "prerequisite": "CS101",
+        "image": "https://example.com/design-patterns.jpg"
+      },
+      {
+        "course_name": "Data Structures and Algorithms",
+        "course_number": "CS102",
+        "course_instructor": "Dr. Khalid Al-Yousef",
+        "capacity": 90,
+        "registeredStudents": 45,
+        "isOpen": true,
+        "category": "Programming",
+        "prerequisite": "CM101",
+        "image": "https://example.com/data-structures.jpg"
+      },
+      {
+        "course_name": "Database Systems",
+        "course_number": "CS202",
+        "course_instructor": "Dr. Fatima Al-Habib",
+        "capacity": 75,
+        "registeredStudents": 60,
+        "isOpen": true,
+        "category": "Database",
+        "prerequisite": "CS101",
+        "image": "https://example.com/database-systems.jpg"
+      },
+      {
+        "course_name": "Web Development Fundamentals",
+        "course_number": "WD101",
+        "course_instructor": "Dr. Youssef Al-Mahdi",
+        "capacity": 85,
+        "registeredStudents": 30,
+        "isOpen": true,
+        "category": "Web",
+        "prerequisite": "CM101",
+        "image": "https://example.com/web-development.jpg"
+      },
+      {
+        "course_name": "Mobile Application Development",
+        "course_number": "MD201",
+        "course_instructor": "Prof. Layla Al-Fadhil",
+        "capacity": 70,
+        "registeredStudents": 65,
+        "isOpen": true,
+        "category": "Mobile",
+        "prerequisite": "WD101",
+        "image": "https://example.com/mobile-development.jpg"
+      },
+      {
+        "course_name": "Artificial Intelligence Fundamentals",
+        "course_number": "AI301",
+        "course_instructor": "Dr. Ahmed Khan",
+        "capacity": 60,
+        "registeredStudents": 55,
+        "isOpen": true,
+        "category": "AI",
+        "prerequisite": "CS102",
+        "image": "https://example.com/ai-fundamentals.jpg"
+      },
+      {
+        "course_name": "Machine Learning",
+        "course_number": "ML302",
+        "course_instructor": "Dr. Samira Abbas",
+        "capacity": 50,
+        "registeredStudents": 48,
+        "isOpen": false,
+        "category": "AI",
+        "prerequisite": "AI301",
+        "image": "https://example.com/machine-learning.jpg"
+      },
+      {
+        "course_name": "Cybersecurity Essentials",
+        "course_number": "CS401",
+        "course_instructor": "Dr. Tariq Mohammed",
+        "capacity": 65,
+        "registeredStudents": 40,
+        "isOpen": true,
+        "category": "Security",
+        "prerequisite": "CS202",
+        "image": "https://example.com/cybersecurity.jpg"
       }
-  ]
-}
+    ]
+  }

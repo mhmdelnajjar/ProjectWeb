@@ -1,28 +1,20 @@
 {
     "usersArray": [
-        {
-            "userType": "student",
-            "username": "abood",
-            "password": "123",
-            "completedCourses": [
-                {
-                    "course_number": "CM101",
-                    "grade": "A"
-                }
-            ],
-            "currentCourses": [],
-            "pendingCourses": []
-        },
-        {
-            "userType": "instructor",
-            "username": "abdullahi",
-            "password": "123",
-            "assignedCourses": ["CS101", "CS201"]
-        },
-        {
-            "userType": "admin",
-            "username": "amr",
-            "password": "123"
-        }
+      {
+        "userType": "student",
+        "username": "abood",
+        "completedCourses": [
+          {
+            "course_number": "CM101",
+            "grade": "A"
+          }
+          {
+            "course_number": "CS101",
+            "grade": "A"
+          }
+        ],
+        "currentCourses": [],
+        "pendingCourses": []
+      }
     ]
-}
+  }

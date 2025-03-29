@@ -74,128 +74,202 @@ async function getStudentCourses(usernameGetten) {
 }
 
 async function loadCourse() {
-    if (localStorage.courses) {
-        courses = JSON.parse(localStorage.courses);
-    } else {
-        const req = await fetch("/jsons/courses.json");
-        const res = await req.json();
-        localStorage.courses = JSON.stringify(res);
-        courses = res;
+    try {
+        if (localStorage.courses) {
+            courses = JSON.parse(localStorage.courses);
+        } else {
+            const response = await fetch("jsons/courses.json");
+            const data = await response.json();
+            courses = data.courses; // Access the courses array from the response
+            localStorage.courses = JSON.stringify(courses) // Store the entire response
+        }
+        displayCourses(courses);
+    } catch (error) {
+        console.error("Error loading courses:", error);
+        textField.innerHTML = "<p>Error loading courses. Please try again later.</p>";
     }
-    displayCourses(courses);
 }
 
 // Function to display courses as cards
 function displayCourses(filteredCourses) {
-
-    if (isRegistrationView == false) {
     textField.innerHTML = filteredCourses.length 
-        ? returnCards(filteredCourses) 
+        ? (isRegistrationView ? returnCardsForReg(filteredCourses) : returnCards(filteredCourses))
         : "<p>No courses found</p>";
-    } else {
-        textField.innerHTML = filteredCourses.length 
-        ? returnCardsForReg(filteredCourses) 
-        : "<p>No courses found</p>";
-    }
 }
 
-// Function to return HTML for course cards
+// Function to return HTML for normal course cards
 function returnCards(courses) {
-    if (isRegistrationView==false){
-    return courses.map(e => `
+    return courses.map(course => `
         <fieldset>
             <div class="card">
-                <img class="img1" src="${e.image}" alt="${e.course_name}">
-                <div class="words">
-                    <h3>${e.course_name}</h3>
-                    <h4>${e.course_number}</h4>
-                    <p>${e.prerequisite}</p>
-                    <p>${e.category}</p>
-                    <div>${e.capacity}</div>
-                </div>
-            </div>
-        </fieldset>
-    `).join("");}
-}
-
-function returnCardsForReg(courses) {
-    return courses.map((course, index) => `
-        <fieldset class="course-card">
-            <div class="card" onclick="showCourseDetails(${index})">
                 <img class="img1" src="${course.image}" alt="${course.course_name}">
                 <div class="words">
                     <h3>${course.course_name}</h3>
                     <h4>${course.course_number}</h4>
                     <p><strong>Instructor:</strong> ${course.course_instructor}</p>
-                    <p><strong>Schedule:</strong> ${course.schedule || 'Not specified'}</p>
-                    <p><strong>Available Seats:</strong> ${course.capacity - (course.registeredStudents || 0)}/${course.capacity}</p>
+                    <p><strong>Category:</strong> ${course.category}</p>
+                    <p><strong>Prerequisites:</strong> ${course.prerequisite || "None"}</p>
+                    <p><strong>Seats:</strong> ${course.registeredStudents}/${course.capacity}</p>
+                    <p><strong>Status:</strong> ${course.isOpen ? "Open" : "Closed"}</p>
                 </div>
-                <button class="register-btn" onclick="event.stopPropagation(); addToReg(${index})">
-                    Register
-                </button>
             </div>
         </fieldset>
     `).join("");
 }
 
-let currentModal = null;
-
-function showCourseDetails(index) {
-    const course = courses[index];
+function hasCompletedCourse(courseNumber) {
+    return (studentCourses.completed || []).some(
+      c => c.course_number.trim().toUpperCase() === courseNumber.trim().toUpperCase()
+    );
+  }
+  
+// Helper function to check passing grade
+function hasPassedCourse(courseNumber) {
+    const course = studentCourses.completed.find(c => c.course_number== courseNumber);
+    if (!course) return false;
     
-    const modal = document.createElement('div');
-    modal.className = 'course-modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>${course.course_name} Details</h2>
-                <span class="close-modal" onclick="closeModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="course-image">
-                    <img src="${course.image}" alt="${course.course_name}">
-                </div>
-                <div class="course-info">
-                    <p><strong>Course Code:</strong> ${course.course_number}</p>
-                    <p><strong>Instructor:</strong> ${course.course_instructor}</p>
-                    <p><strong>Description:</strong> ${course.description || 'No description available'}</p>
-                    <p><strong>Prerequisites:</strong> ${course.prerequisite || 'None'}</p>
-                    <p><strong>Schedule:</strong> ${course.schedule || 'Not specified'}</p>
-                    <p><strong>Credits:</strong> ${course.credits || 'N/A'}</p>
-                    <p><strong>Department:</strong> ${course.department || 'General'}</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-register-btn" onclick="addToReg(${index}); closeModal()">
-                    Register Now
-                </button>
-                <button class="modal-back-btn" onclick="closeModal()">
-                    Back to Courses
-                </button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    currentModal = modal;
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-    if (currentModal) {
-        document.body.removeChild(currentModal);
-        currentModal = null;
-        document.body.style.overflow = 'auto';
+    const passingGrades = ["A","B","C","D"];
+    return passingGrades.includes(course.grade);
+  }
+  
+  // Updated prerequisite checking
+  function checkPrerequisites(prerequisiteString) {
+    // Handle empty or undefined prerequisite string
+    if (!prerequisiteString || prerequisiteString.trim() === "") {
+        return { canRegister: true, reason: "No prerequisites" };
     }
-}
 
-function addToReg(index) {
-    const course = courses[index];
-    console.log(`Registering for ${course.course_name}`);
-    isRegistrationView = false;
-    displayCourses(courses);
-    closeModal();
+    // Split the string by commas and clean up the results
+    const prereqs = prerequisiteString.split(",")
+        .map(p => p.trim())  // Remove whitespace
+        .filter(p => p !== "");  // Remove empty strings
+
+    console.log("Parsed prerequisites:", prereqs); // Debug log
+
+    const missing = [];
+    const failed = [];
+
+    for (const prereq of prereqs) {
+        if (!hasCompletedCourse(prereq)) {
+            missing.push(prereq);
+        } else if (!hasPassedCourse(prereq)) {
+            failed.push(prereq);
+        }
+    }
+
+    if (failed.length > 0) {
+        return {
+            canRegister: false,
+            reason: `Failed prerequisites: ${failed.join(", ")}`
+        };
+    }
+    
+    if (missing.length > 0) {
+        return {
+            canRegister: false,
+            reason: `Missing prerequisites: ${missing.join(", ")}`
+        };
+    }
+    
+    return { canRegister: true, reason: "All prerequisites met" };
 }
+  
+
+  
+// Updated checkCourseEligibility 
+function checkCourseEligibility(course) {
+    // Check prerequisites first
+    const prereqCheck = checkPrerequisites(course.prerequisite);
+    if (!prereqCheck.canRegister) {
+      return prereqCheck;
+    }
+  
+    // Check other conditions
+    const availableSeats = course.capacity - course.registeredStudents;
+    if (availableSeats <= 0) {
+      return {
+        canRegister: false,
+        reason: "Course is full"
+      };
+    }
+  
+    if (!course.isOpen) {
+      return {
+        canRegister: false,
+        reason: "Registration closed"
+      };
+    }
+  
+    if (studentCourses.current.some(c => c.course_number === course.course_number)) {
+      return {
+        canRegister: false,
+        reason: "Already enrolled"
+      };
+    }
+  
+    if (studentCourses.pending.some(c => c.course_number === course.course_number)) {
+      return {
+        canRegister: false,
+        reason: "Pending approval"
+      };
+    }
+  
+    return {
+      canRegister: true,
+      reason: "Eligible to register"
+    };
+  }
+function returnCardsForReg(courses) {
+    return courses.map(course => {
+      const eligibility = checkCourseEligibility(course);
+      const availableSeats = course.capacity - (course.registeredStudents || 0);
+      
+      return `
+        <fieldset class="course-card ${eligibility.canRegister ? '' : 'disabled-card'}">
+          <div class="card">
+            <img class="img1" src="${course.image}" alt="${course.course_name}">
+            <div class="words">
+              <h3>${course.course_name}</h3>
+              <h4>${course.course_number}</h4>
+              <p><strong>Instructor:</strong> ${course.course_instructor}</p>
+              <p><strong>Seats:</strong> ${availableSeats}/${course.capacity}</p>
+              <p class="eligibility-status ${eligibility.canRegister ? 'eligible' : 'ineligible'}">
+                ${eligibility.reason}
+              </p>
+            </div>
+            <button class="register-btn ${eligibility.canRegister ? '' : 'disabled'}" 
+                    onclick="${eligibility.canRegister ? `attemptRegistration('${course.course_number}')` : ''}">
+              ${eligibility.canRegister ? 'Register' : 'Cannot Register'}
+            </button>
+          </div>
+        </fieldset>
+      `;
+    }).join("");
+  }
+  function attemptRegistration(courseNumber) {
+    const course = courses.find(c => c.course_number === courseNumber);
+    if (!course) return;
+    
+    // Verify eligibility again
+    const eligibility = checkCourseEligibility(course);
+    if (!eligibility.canRegister) {
+      alert(`Cannot register: ${eligibility.reason}`);
+      return;
+    }
+    
+    // Add to pending (in real app, send to server)
+    studentCourses.pending.push({
+      course_number: course.course_number,
+      course_name: course.course_name,
+      instructor: course.course_instructor,
+      status: "Pending Approval"
+    });
+    
+    alert(`Successfully requested registration for ${course.course_name}`);
+    displayCourses(courses); // Refresh view
+  }
+
+
 function allEventListners() {
 search.addEventListener("input", function () {
     const searchText = search.value.toLowerCase();
