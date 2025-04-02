@@ -5,6 +5,7 @@
     --falu-red: #721c1c;
     --falu-red-light: #fef2f2;
     --falu-red-bright: #9a1a1a;
+    --falu-red-200: #ffc9c9;
 
     --falu-red-dark: #460909;
     --dark-grey: #121212;
@@ -17,6 +18,9 @@
         --color-link: var(--falu-red);
         --color-link-hover: var(--falu-red-bright);
         --color-link-active: var(--falu-red-dark);
+        --color-card: var(--falu-red-200);
+        --color-shadow: rgba(0, 0, 0, 0.1);
+        --color-highlight: var(--falu-red);
     }
 }
 
@@ -26,7 +30,10 @@
         --color-text: var(--falu-red-light);
         --color-link: var(--falu-red-dark);
         --color-link-hover: var(--falu-red-bright);
-        --color-link-active: var(--falu-red)
+        --color-link-active: var(--falu-red);
+        --color-card: var(--falu-red);
+        --color-shadow: rgba(255, 255, 255, 0.1);
+        --color-highlight: var(--falu-red-200);
     }
 }
 
@@ -45,7 +52,7 @@ p {
     color: var(--color-text);
 }
 
-header img {
+#title img {
     width: 10em;
     height: auto;
     filter: invert(1) sepia(1) saturate(0.5) hue-rotate(305deg);
@@ -71,6 +78,8 @@ h1 {
 
 h2 {
     font-size: 1.2em;
+    text-align: center;
+    color: var(--color-text);
 }
 
 nav ul {
@@ -87,7 +96,7 @@ nav ul li {
     position: relative;
 }
 
-nav ul li a {
+nav ul li a, .learning-path-dropdown{
     color: var(--falu-red-light);
     text-decoration: none;
     padding: 1em 0;
@@ -95,8 +104,56 @@ nav ul li a {
     width: 100%;
 }
 
+.menu-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav img {
+    width: 1em;
+    filter: invert(1) sepia(1) saturate(2) hue-rotate(300deg);
+    margin-right: 0.5em;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    background-color: var(--color-card);
+    box-shadow: 0 4px 8px var(--color-shadow);
+    border-radius: 0 0 5px 5px;
+    min-width: 150px;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px 0;
+    color: #333;
+    text-decoration: none;
+    width: 100%;
+    color: var(--color-text);
+}
+
+.dropdown a:hover {
+    background-color: var(--color-highlight);
+    color: var(--color-background);
+}
+
+.learning-path-dropdown:hover .dropdown {
+    display: block;
+}
+
+.dropdown a:last-child {
+    border-radius: 0 0 5px 5px;
+}
+
 nav ul li:hover {
     background-color: var(--falu-red-bright);
+    cursor:pointer;
 }
 
 main {
@@ -107,6 +164,7 @@ main {
 form {
     display: flex;
     align-items: center;
+    padding-bottom: 5em
 }
 
 form *{
@@ -157,6 +215,9 @@ footer {
     flex-direction: row;
     justify-content: space-around;
 }
+footer h2{
+    color: var(--falu-red-light);
+}
 
 #socials {
     display: flex;
@@ -188,3 +249,61 @@ footer {
     color: var(--falu-red-light);
 }
 
+.card1 {
+    background: var(--color-card);
+    min-height: 14em;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 7px var(--color-shadow);
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+
+  }
+  .card1 img {
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    border-radius: 50px;
+    
+    
+  }
+   
+  .card1:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .instructors-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 1.15em;
+    margin: 5px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+
+  
+  .headmessage {
+    background: var(--color-card);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.headmessage h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+    text-align:left;
+}
+
+.headmessage p {
+    font-size: 16px;
+    color: #555;
+    text-align:left;
+
+}

@@ -53,5 +53,19 @@ search.addEventListener("input", function () {
     displayCourses(filteredCourses);
 });
 
+document.getElementById('abtus').addEventListener('click', function(event) {
+    event.preventDefault();  
+    window.location.href = 'aboutus.html';
+});
+
+document.getElementById('homenav').addEventListener('click', function(event) {
+    event.preventDefault();  
+    window.location.href = 'home.html';
+});
+document.getElementById('regnav').addEventListener('click', function(event) {
+    event.preventDefault();  
+    window.location.href = 'main.html';
+});
+
 // Load courses when the script runs
 loadCourse();
