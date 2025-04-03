@@ -1,7 +1,7 @@
  [
       {
         "course_name": "Object-Oriented Programming Principles",
-        "course_instructor": "Dr. Omar Al-harami",
+        "course_instructor": "Dr. Mohammed Saleh",
         "course_number": "CS101",
         "capacity": 100,
         "category": "OOP",
@@ -10,21 +10,21 @@
       },
       {
         "course_name": "Advanced Object-Oriented Design Patterns",
-        "course_instructor": "Prof. Aisha Al-Mansouri",
+        "course_instructor": "Prof. Moutaz Saleh",
         "course_number": "CS201",
         "capacity": 80,
         "category": "OOP",
         "prerequisite": "Object-Oriented Programming Principles",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
+        "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrspWj1e4MOJ5DA4ndm3Q2BGAJY_t51_aWvUoTkosrGSzJk1L3r13Q9GK7CnGEGS6EBFlZpuov9ulyZX2lXIXssyb3bedgjMU8XDo1jBksB4Ttge2gM9k4Y4351Fy487uUO2mN3-D4qYXT/s1280/Blog-Object-Oriented-Programming.jpg"
       },
       {
         "course_name": "Database Management Systems",
-        "course_instructor": "Dr. Khalid Al-Yousef",
+        "course_instructor": "Dr. Rehab Al-Duwairi",
         "course_number": "CS301",
         "capacity": 120,
         "category": "Database",
         "prerequisite": "Data Structures",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
+        "image": "https://th.bing.com/th/id/OIP.Y9AQiNAgELhwV2SW8IzqTwHaE3?rs=1&pid=ImgDetMain"
       },
       {
         "course_name": "SQL and NoSQL Databases",
@@ -33,34 +33,25 @@
         "capacity": 90,
         "category": "Database",
         "prerequisite": "Database Management Systems",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
+        "image": "https://th.bing.com/th/id/OIP.N0qZZxcXoVPiLQlUkEW0NgHaD6?rs=1&pid=ImgDetMain"
       },
       {
-        "course_name": "OOP in Java",
-        "course_instructor": "Dr. Youssef Al-Mahdi",
-        "course_number": "CS202",
+        "course_name": "Web Development",
+        "course_instructor": "Dr. Mahmoud Barhamgi",
+        "course_number": "CS351",
         "capacity": 85,
-        "category": "OOP",
-        "prerequisite": "Object-Oriented Programming Principles",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
-      },
-      {
-        "course_name": "Big Data and Scalable Databases",
-        "course_instructor": "Prof. Layla Al-Fadhil",
-        "course_number": "CS401",
-        "capacity": 75,
-        "category": "Database",
-        "prerequisite": "SQL and NoSQL Databases",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
+        "category": "WEB",
+        "prerequisite": "",
+        "image": "https://th.bing.com/th/id/OIP.mTZEWl1LGBJJd3bwUTtxYAHaEK?rs=1&pid=ImgDetMain"
       },
       {
         "course_name": "Introduction to Programming",
-        "course_instructor": "Dr. Omar Al-Farouq",
+        "course_instructor": "Dr. Ziad Ali",
         "course_number": "CM101",
         "capacity": 100,
         "category": "Programming",
         "prerequisite": "",
-        "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fobject-oriented-programming&psig=AOvVaw0H7PRCCKL_-1zgzaAoPqQw&ust=1742156154435000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID2lcfzjIwDFQAAAAAdAAAAABAE"
+        "image": "https://th.bing.com/th/id/R.17fa123af066c303b45d7c79afdf99e0?rik=vUyT1LUDEYPfkQ&riu=http%3a%2f%2fdesigndrizzle.com%2fwp-content%2fuploads%2fpython2.jpg&ehk=e4Gc4ony9L5ELi4oc55o6tLkFu35e4vmDE7LM%2fIVCVI%3d&risl=&pid=ImgRaw&r=0"
       }
     ]
   

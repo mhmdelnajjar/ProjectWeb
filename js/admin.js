@@ -28,14 +28,19 @@ function displayCourses(filteredCourses) {
 function returnCards(courses) {
     return courses.map(e => `
         <fieldset>
-            <div class="card">
+            <div class="card1">
                 <img class="img1" src="${e.image}" alt="${e.course_name}">
                 <div class="words">
-                    <h3>${e.course_name}</h3>
-                    <h4>${e.course_number}</h4>
-                    <p>${e.prerequisite}</p>
-                    <p>${e.category}</p>
-                    <div>${e.capacity}</div>
+                    <h3> COURSE NAME: ${e.course_name}</h3>
+                    <br>
+                    <h4> COURSE NUMBER: ${e.course_number}</h4>
+                    <br>                    
+                    <p> PREREQUISITE: ${e.prerequisite}</p>
+                    <br>
+                    <p> CATEGORY: ${e.category}</p>
+                    <br>
+                    <div> <p> CAPACITY: </p> ${e.capacity}</div>
+                    <br>
                 </div>
                 <div class="action-btns">
         <button class="btn-update" id="btn-update"> <i class="fa fa-pencil"></i> Update</button>
