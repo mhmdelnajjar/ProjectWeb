@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSE main</title>
-    <link rel="stylesheet" href="./styles/main.css">
+    <title>About Us - Computer Science at QU</title>
+    <link rel="stylesheet" href="styles/aboutus.css">
 </head>
-
-<body><div class="container">
+<body>
     <header>
         <div id="title">
-            <img class="logo" src="./media/cse-logo.png" alt="QU CSE">
-            <h1 class="cse">CSE Registration</h1>
+            <img src="./media/cse-logo.png" alt="QU CSE">
+            <h1>CSE Registration</h1>
         </div>
         <nav class="navcontainer">
             <ul>
@@ -28,31 +27,27 @@
             </ul>
         </nav>
     </header>
-    <main class="main">
-        <form >
-            <label for="search">Search for courses: </label>
-            <input id="searchBar" type="text" placeholder="Search..." class="search-box" required>
-            <button type="submit" class="search-btn">
-                <img src="./media/icons/search.svg" alt="search">
-            </button>
-        </form>
-        <h2 class="h2">Courses Avaialble</h2>
-        <div class="cards" id="cards">
-        <fieldset>
-            <div class="card1">
-                <img class="img1" src="https://media.istockphoto.com/id/147480805/photo/oop-object-oriented-programming.jpg?s=612x612&w=0&k=20&c=r47EPdaimqTUmRu4Pne6jJyi95NPWDJU3IsPW1sAPec=" alt="Robotics">
-                <div class="words">
-                    <h3>Robotics</h3>
-                    <h4>Robo-Vision: Giving your robot eyes</h4>
-                    <p class="pcard">Build on the previous workshop and implement a computer vision system using Python and OpenCV.</p>
-                    <div class="footercard">
-                        <div >
-                            <p class="qucc">QUCC</p>
-                            <span>Jan 17, 2022   •   <i class="far fa-clock"></i> 3 min</span>
-                        </div>
-                </div>
+    <main>
+        <div class="about-container" id="aboutSection">
+            <div class="headmessage">
+            <h2>About Computer Science at Qatar University</h2>
+            <p>The Computer Science program at Qatar University provides students with the knowledge and skills needed for a successful career in computing. The program covers topics such as artificial intelligence, cybersecurity, software engineering, and data science. It is designed to meet international standards and prepares graduates for both industry and research.</p>
             </div>
-        </fieldset>
+            <div class="instructors-grid">
+                <div class="card1">
+                    <h3>Dr. Mahmoud Barhamgi</h3>
+                    <p>Associate Professor in Computer Sciencet</p>
+                    <p>Teaches: Web Development</p>
+                    <img src="https://www.qu.edu.qa/SiteImages/static_file/qu/colleges/engineering/departments/cse/images/Mahmoud_Barhamgi.png?csf=1&e=9RvgKr" alt="">
+                </div>
+                <div class="card1">
+                    <h3>Mr. Abdulahi Mohammed</h3>
+                    <p>Bch in web dev</p>
+                    <p>Teaches: Web Development</p>
+                    <img src="https://media.licdn.com/dms/image/v2/C4E03AQHVRLl5K0Z0yw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1523661783694?e=2147483647&v=beta&t=OwyfGzLYWmxXxvIAnf4an_TK3KiHXjfdD-A58Cp2u44" alt="">
+                </div>
+                
+            </div>
         </div>
     </main>
     <footer>
@@ -85,9 +80,9 @@
             <p>© 2025 Qatar University, All Rights Reserved</p>
         </div>
     </footer>
-    <script src="js/main.js"></script>
-</div>
-</body>
 
+    <script src="js/abtus.js"></script>
+
+</body>
 
 </html>

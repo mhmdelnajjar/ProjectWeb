@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSE admin</title>
-    <link rel="stylesheet" href="./styles/admin.css">
+    <link rel="stylesheet" href="./styles/main.css">
 </head>
 
 <body>
@@ -22,7 +22,34 @@
         </nav>
     </header>
     <main>
+
+
         <form >
+            <label for="search">Search for courses: </label>
+            <input id="searchBar" type="text" placeholder="Search..." class="search-box" required>
+            <button type="submit" class="search-btn">
+                <img src="./media/icons/search.svg" alt="search">
+            </button>
+        </form>
+        <h2 class="h2">Courses Avaialble</h2>
+        <div class="cards" id="cards">
+        <fieldset>
+            <div class="card">
+                <img class="img1" src="https://media.istockphoto.com/id/147480805/photo/oop-object-oriented-programming.jpg?s=612x612&w=0&k=20&c=r47EPdaimqTUmRu4Pne6jJyi95NPWDJU3IsPW1sAPec=" alt="Robotics">
+                <div class="words">
+                    <h3>Robotics</h3>
+                    <h4>Robo-Vision: Giving your robot eyes</h4>
+                    <p class="pcard">Build on the previous workshop and implement a computer vision system using Python and OpenCV.</p>
+                    <div class="footercard">
+                        <div >
+                            <p class="qucc">QUCC</p>
+                            <span>Jan 17, 2022   •   <i class="far fa-clock"></i> 3 min</span>
+                        </div>
+                </div>
+            </div>
+        </fieldset>
+        </div>
+        <!-- <form >
             <label for="search">Search for courses: </label>
             <input type="text" placeholder="Search..." class="search-box">
             <button type="submit" class="search-btn">
@@ -47,7 +74,7 @@
                 
                 <input type="submit" value="Submit">
             </form>
-        </fieldset>
+        </fieldset> -->
     </main>
     <footer>
         <div id="keep-updated">
@@ -79,6 +106,8 @@
             <p>© 2025 Qatar University, All Rights Reserved</p>
         </div>
     </footer>
+<script src="js/admin.js"></script>
+
 </body>
 
 
