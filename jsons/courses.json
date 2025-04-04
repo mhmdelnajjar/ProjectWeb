@@ -1,58 +1,70 @@
- [
-      {
-        "course_name": "Object-Oriented Programming Principles",
-        "course_instructor": "Dr. Mohammed Saleh",
-        "course_number": "CS101",
-        "capacity": 100,
-        "category": "OOP",
-        "prerequisite": "Introduction to Programming",
-        "image": "https://miro.medium.com/v2/resize:fit:1200/1*ENym9k9bNQkkyCe5zdwucA.png"
-      },
-      {
-        "course_name": "Advanced Object-Oriented Design Patterns",
-        "course_instructor": "Prof. Moutaz Saleh",
-        "course_number": "CS201",
-        "capacity": 80,
-        "category": "OOP",
-        "prerequisite": "Object-Oriented Programming Principles",
-        "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrspWj1e4MOJ5DA4ndm3Q2BGAJY_t51_aWvUoTkosrGSzJk1L3r13Q9GK7CnGEGS6EBFlZpuov9ulyZX2lXIXssyb3bedgjMU8XDo1jBksB4Ttge2gM9k4Y4351Fy487uUO2mN3-D4qYXT/s1280/Blog-Object-Oriented-Programming.jpg"
-      },
-      {
-        "course_name": "Database Management Systems",
-        "course_instructor": "Dr. Rehab Al-Duwairi",
-        "course_number": "CS301",
-        "capacity": 120,
-        "category": "Database",
-        "prerequisite": "Data Structures",
-        "image": "https://th.bing.com/th/id/OIP.Y9AQiNAgELhwV2SW8IzqTwHaE3?rs=1&pid=ImgDetMain"
-      },
-      {
-        "course_name": "SQL and NoSQL Databases",
-        "course_instructor": "Dr. Fatima Al-Habib",
-        "course_number": "CS302",
-        "capacity": 90,
-        "category": "Database",
-        "prerequisite": "Database Management Systems",
-        "image": "https://th.bing.com/th/id/OIP.N0qZZxcXoVPiLQlUkEW0NgHaD6?rs=1&pid=ImgDetMain"
-      },
-      {
-        "course_name": "Web Development",
-        "course_instructor": "Dr. Mahmoud Barhamgi",
-        "course_number": "CS351",
-        "capacity": 85,
-        "category": "WEB",
-        "prerequisite": "",
-        "image": "https://th.bing.com/th/id/OIP.mTZEWl1LGBJJd3bwUTtxYAHaEK?rs=1&pid=ImgDetMain"
-      },
-      {
-        "course_name": "Introduction to Programming",
-        "course_instructor": "Dr. Ziad Ali",
-        "course_number": "CM101",
-        "capacity": 100,
-        "category": "Programming",
-        "prerequisite": "",
-        "image": "https://th.bing.com/th/id/R.17fa123af066c303b45d7c79afdf99e0?rik=vUyT1LUDEYPfkQ&riu=http%3a%2f%2fdesigndrizzle.com%2fwp-content%2fuploads%2fpython2.jpg&ehk=e4Gc4ony9L5ELi4oc55o6tLkFu35e4vmDE7LM%2fIVCVI%3d&risl=&pid=ImgRaw&r=0"
-      }
-    ]
-  
-  
+{
+  "courses": [
+    {
+      "course_name": "Object-Oriented Programming Principles",
+      "course_number": "CS101",
+      "course_instructor": "Dr. Mohammed Saleh",
+      "capacity": 100,
+      "registeredStudents": 25,
+      "isOpen": true,
+      "category": "OOP",
+      "prerequisite": "Introduction to Programming",
+      "image": "https://miro.medium.com/v2/resize:fit:1200/1*ENym9k9bNQkkyCe5zdwucA.png"
+    },
+    {
+      "course_name": "Advanced Object-Oriented Design Patterns",
+      "course_number": "CS201",
+      "course_instructor": "Prof. Moutaz Saleh",
+      "capacity": 80,
+      "registeredStudents": 70,
+      "isOpen": false,
+      "category": "OOP",
+      "prerequisite": "Object-Oriented Programming Principles",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrspWj1e4MOJ5DA4ndm3Q2BGAJY_t51_aWvUoTkosrGSzJk1L3r13Q9GK7CnGEGS6EBFlZpuov9ulyZX2lXIXssyb3bedgjMU8XDo1jBksB4Ttge2gM9k4Y4351Fy487uUO2mN3-D4qYXT/s1280/Blog-Object-Oriented-Programming.jpg"
+    },
+    {
+      "course_name": "Database Management Systems",
+      "course_number": "CS301",
+      "course_instructor": "Dr. Rehab Al-Duwairi",
+      "capacity": 120,
+      "registeredStudents": 45,
+      "isOpen": true,
+      "category": "Database",
+      "prerequisite": "Data Structures",
+      "image": "https://th.bing.com/th/id/OIP.Y9AQiNAgELhwV2SW8IzqTwHaE3?rs=1&pid=ImgDetMain"
+    },
+    {
+      "course_name": "SQL and NoSQL Databases",
+      "course_number": "CS302",
+      "course_instructor": "Dr. Fatima Al-Habib",
+      "capacity": 90,
+      "registeredStudents": 60,
+      "isOpen": true,
+      "category": "Database",
+      "prerequisite": "Database Management Systems",
+      "image": "https://th.bing.com/th/id/OIP.N0qZZxcXoVPiLQlUkEW0NgHaD6?rs=1&pid=ImgDetMain"
+    },
+    {
+      "course_name": "Web Development",
+      "course_number": "CS351",
+      "course_instructor": "Dr. Mahmoud Barhamgi",
+      "capacity": 85,
+      "registeredStudents": 30,
+      "isOpen": true,
+      "category": "WEB",
+      "prerequisite": "",
+      "image": "https://th.bing.com/th/id/OIP.mTZEWl1LGBJJd3bwUTtxYAHaEK?rs=1&pid=ImgDetMain"
+    },
+    {
+      "course_name": "Introduction to Programming",
+      "course_number": "CM101",
+      "course_instructor": "Dr. Ziad Ali",
+      "capacity": 100,
+      "registeredStudents": 0,
+      "isOpen": true,
+      "category": "Programming",
+      "prerequisite": "",
+      "image": "https://th.bing.com/th/id/R.17fa123af066c303b45d7c79afdf99e0?rik=vUyT1LUDEYPfkQ&riu=http%3a%2f%2fdesigndrizzle.com%2fwp-content%2fuploads%2fpython2.jpg&ehk=e4Gc4ony9L5ELi4oc55o6tLkFu35e4vmDE7LM%2fIVCVI%3d&risl=&pid=ImgRaw&r=0"
+    }
+  ]
+}

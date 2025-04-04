@@ -8,12 +8,13 @@ loginBtn.addEventListener("submit", handleLogin);
 
 async function handleLogin(e) {
     e.preventDefault()
-    const jsonFile = await fetch("/jsons/users.json");
+    const jsonFile = await fetch("jsons/users.json");
     const response = await jsonFile.json();
-
-    const usernameLogged = document.querySelector("#username").value
-    const passwordLogged = document.querySelector("#password").value
-    users =(response)
+    
+users  =response
+    const usernameLogged = document.querySelector("#username").value.trim()
+    const passwordLogged = document.querySelector("#password").value.trim()
+ 
 
     
     validateUsers(usernameLogged,passwordLogged,users)
@@ -23,9 +24,13 @@ async function handleLogin(e) {
 
 
 function validateUsers(usernameLogged,passwordLogged,users){
-    const isFound = users.usersArray.find(user => 
-        user.username === usernameLogged && user.password === passwordLogged
-    );
+
+    
+    const isFound = users.usersArray.find(user => {
+        return user.username === usernameLogged && user.password === passwordLogged;
+    });
+    
+    
 
     if(isFound){
         if (isFound.userType =="admin") {
