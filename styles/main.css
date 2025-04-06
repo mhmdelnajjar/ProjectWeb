@@ -47,6 +47,12 @@ body {
     transition: all ease 250ms;
 }
 
+  /* No need to adjust title padding anymore */
+  /* Adjust title positioning to accommodate logout button */
+  #title {
+    position: relative;
+    padding-right: 120px; /* Make space for logout button */
+  }
 p {
     text-align: center;
     color: var(--color-text);
@@ -259,7 +265,7 @@ footer h2{
     align-items: center;
     text-align: center;
     flex-direction: column;
-
+   
   }
   .card1 img {
     width: 150px;
@@ -303,7 +309,37 @@ footer h2{
     letter-spacing: 1px;
     cursor: pointer;
   }
+  .logout-button {
+    
+    margin-top: 1.5rem;
+    height:20px;
+    display: inline-flex;
+    align-items: center;
+    background-color: #530d0d;
+    color: white;
+    padding: 10px 20px;
+    font-size: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .logout-button i {
+    margin-right: 8px;
+  }
+
+  .logout-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
   
+  }
+/* Ensure header has relative positioning */
+#title {
+    position: relative;
+}
   .btn-update {
     background-color: #f0ad4e;
     color: #fff;
@@ -387,5 +423,6 @@ header{
         margin-left: 75px;
         
     }
+    
   
 }

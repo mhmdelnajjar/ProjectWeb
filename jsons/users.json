@@ -7,21 +7,12 @@
       "completedCourses": [
         {
           "course_number": "CM101",
-          "grade": "A"
-        },
-        {
-          "course_number": "CS101",
-          "grade": "A"
+          "grade": "F"
         }
       ],
-      "currentCourses": [],
-      "pendingCourses": []
-    },
-    {
-      "userType": "instructor",
-      "username": "abood",
-      "password":"123",
-      "assignedCourses": []
+      "currentCourses": [{"course_number":""}],
+      "pendingCourses": [{"course_number":""}]
     }
+    
   ]
 }

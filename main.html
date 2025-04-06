@@ -5,25 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSE main</title>
     <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
 </head>
 
 <body><div class="container">
     <header>
         <div id="title">
-            <img class="logo" src="./media/cse-logo.png" alt="QU CSE">
-            <h1 class="cse">CSE Registration</h1>
+          <img class="logo" src="./media/cse-logo.png" alt="QU CSE">
+          <h1 class="cse">CSE Registration</h1>
+          <button id ="logoutBtn" class="logout-button">
+            <i class="fa fa-sign-out-alt"></i> Logout
+          </button>
         </div>
         <nav class="navcontainer">
             <ul>
                 <li><a id="homenav">HOME</a></li>
                 <li><a id="regnav" href="">REGISTER</a></li>
                 <li class="learning-path-dropdown">
-                    <div class="menu-head"><img src="./media/icons/caret-down.svg" alt="">VIEW LEARNING PATH</div>
-                    <div class="dropdown">
-                        <a href="#">Courses Completed</a>
-                        <a href="#">Courses in Progress</a>
-                        <a href="#">Pending Courses</a>
+                    <div class="menu-head">
+                      <span>VIEW LEARNING PATH</span>
+                      <img src="./media/icons/caret-down.svg" alt="" class="dropdown-icon">
                     </div>
+                    <select class="dropdown" id="dropdownR" size="3" aria-label="Learning Path Selection">
+                        <option value="completed">Courses Completed</option>
+                        <option value="progress">Courses In Progress</option>
+                        <option value="pending">Pending Courses</option>
+                      </select>
+                  </li>
                 <li><a id="abtus">ABOUT US</a></li>
             </ul>
         </nav>
