@@ -23,7 +23,11 @@
           "grade": "A"
         }
       ],
-      "currentCourses": [],
+      "currentCourses": [
+        {
+          "course_number":"CM101"
+        }
+      ],
       "pendingCourses": []
     }
     ,

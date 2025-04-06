@@ -70,9 +70,6 @@ function returnCards(courses) {
             <h3>${course.course_name} (${course.course_number})</h3>
             <p>Instructor: ${course.course_instructor}</p>
             <p>Status: ${isCompleted ? '✅ Completed' : isCurrent ? '📚 In Progress' : isPending ? '🕒 Pending' : '🔵 Available'}</p>
-            <div class="action-btns">
-              ${isCurrent ? `<button onclick="markCourseCompleted('${course.course_number}')">Mark Completed</button>` : ''}
-            </div>
           </div>
         </div>
       </fieldset>
@@ -155,20 +152,7 @@ function attemptRegistration(courseNumber) {
   alert(`Registered for ${course.course_name}!`);
 }
 
-function markCourseCompleted(courseNumber) {
-  const allUsers = JSON.parse(localStorage.getItem('users'));
-  const user = allUsers.find(u => u.username === JSON.parse(localStorage.getItem('currentUser')).username);
-  
-  // Move from current to completed
-  const courseIndex = user.currentCourses.findIndex(c => c.course_number === courseNumber);
-  if (courseIndex !== -1) {
-    const completedCourse = user.currentCourses.splice(courseIndex, 1)[0];
-    user.completedCourses.push(completedCourse);
-    localStorage.setItem('users', JSON.stringify(allUsers));
-    updateLocalState();
-    displayCourses(courses);
-  }
-}
+
 
 function approvePendingCourse(courseNumber) {
   const allUsers = JSON.parse(localStorage.getItem('users'));
