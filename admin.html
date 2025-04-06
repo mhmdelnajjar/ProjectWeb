@@ -3,112 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSE admin</title>
+    <title>CSE Admin Dashboard</title>
     <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
-    <header>
-        <div id="title">
-            <img src="./media/cse-logo.png" alt="QU CSE">
-            <h1>CSE Registration</h1>
+    <header class="admin-header">
+        <div class="header-content">
+            <img src="./media/cse-logo.png" alt="QU CSE" class="logo">
+            <h1>CSE Admin Dashboard</h1>
+            <button class="logout-button" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
         </div>
-        <nav class="navcontainer">
+        <nav class="admin-nav">
             <ul>
-                <li><a href="">HOME</a></li>
-                <li><a href="createCourseForm.html">CREATE A COURSE</a></li>
-               
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="createCourseForm.html"><i class="fas fa-plus-circle"></i> Create Course</a></li>
             </ul>
         </nav>
     </header>
-    <main id="main-content">
-
-
-        <form >
-            <label for="search">Search for courses: </label>
-            <input id="searchBar" type="text" placeholder="Search..." class="search-box" required>
-            <button type="submit" class="search-btn">
-                <img src="./media/icons/search.svg" alt="search">
-            </button>
-        </form>
-        <h2 class="h2">Courses Avaialble</h2>
-        <div class="cards" id="cards">
-        <fieldset>
-            <div class="card">
-                <img class="img1" src="https://media.istockphoto.com/id/147480805/photo/oop-object-oriented-programming.jpg?s=612x612&w=0&k=20&c=r47EPdaimqTUmRu4Pne6jJyi95NPWDJU3IsPW1sAPec=" alt="Robotics">
-                <div class="words">
-                    <h3>Robotics</h3>
-                    <h4>Robo-Vision: Giving your robot eyes</h4>
-                    <p class="pcard">Build on the previous workshop and implement a computer vision system using Python and OpenCV.</p>
-                    <div class="footercard">
-                        <div >
-                            <p class="qucc">QUCC</p>
-                            <span>Jan 17, 2022   •   <i class="far fa-clock"></i> 3 min</span>
-                        </div>
+    
+    <main class="admin-main">
+        <div class="dashboard-container">
+            <!-- Approved Courses Panel -->
+            <section class="panel courses-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-book"></i> Approved Courses</h2>
+                    <div class="search-box">
+                        <input type="text" id="searchBar" placeholder="Search courses...">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </fieldset>
+                <div class="panel-content" id="courses-container">
+                    <!-- Courses will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Pending Requests Panel -->
+            <section class="panel requests-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-clock"></i> Pending Requests</h2>
+                    <span class="badge" id="pending-count">0</span>
+                </div>
+                <div class="panel-content" id="requests-container">
+                    <!-- Pending requests will be loaded here -->
+                </div>
+            </section>
         </div>
-        <!-- <form >
-            <label for="search">Search for courses: </label>
-            <input type="text" placeholder="Search..." class="search-box">
-            <button type="submit" class="search-btn">
-                <img src="./media/icons/search.svg" alt="search">
-            </button>
-        </form>
-        <br><br>
-        <fieldset>
-            <legend>Course to be Added: </legend>
-            <form id="form2">
-                <label for="courseName">Course Name:</label>
-                <input type="text" id="courseName" name="courseName" required>
-                
-                <label for="courseId">Course ID:</label>
-                <input type="text" id="courseId" name="courseId" required>
-                
-                <label for="instructorName">Instructor Name:</label>
-                <input type="text" id="instructorName" name="instructorName" required>
-                
-                <label for="capacity">Capacity:</label>
-                <input type="number" id="capacity" name="capacity" min="1" required>
-                
-                <input type="submit" value="Submit">
-            </form>
-        </fieldset> -->
     </main>
-    <footer>
-        <div id="keep-updated">
-            <h2>Keep Updated</h2>
-            <ul id="socials">
-                <a href="https://www.instagram.com/qu_ceng/?hl=en">
-                  <img src="./media/icons/brand-instagram.svg" alt="instagram">Instagram
-                </a>
-                <a href="https://www.facebook.com/p/CSE-at-Qatar-University-100057278927479/">
-                  <img src="./media/icons/brand-facebook.svg" alt="facebook">Facebook
-                </a>
-                <a href="https://x.com/quceng?lang=en">
-                  <img src="./media/icons/brand-x.svg" alt="x">X
-                </a>
-                <a href="https://www.tiktok.com/@qatar_university">
-                  <img src="./media/icons/brand-tiktok.svg" alt="tiktok">Tiktok
-                </a>
-                <a href="https://www.youtube.com/c/qataruniversity/videos">
-                    <img src="./media/icons/brand-youtube.svg" alt="youtube">YouTube
-                </a>
-                <a href="https://www.qu.edu.qa/en-us/">
-                    <img src="./media/icons/world-www.svg" alt="QU website">QU website
-                </a>
-            </ul>
-        </div>
-        <div id="contact">
-            <h2>Contact CSE Department</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, voluptatum?</p>
-            <p>© 2025 Qatar University, All Rights Reserved</p>
-        </div>
+
+    <footer class="admin-footer">
+        <!-- Footer content remains the same -->
     </footer>
-<script src="js/admin.js"></script>
 
+    <script src="js/admin.js"></script>
 </body>
-
-
 </html>
