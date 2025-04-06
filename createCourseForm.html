@@ -7,16 +7,15 @@
   <link rel="stylesheet" href="styles/create.css" />
 </head>
 <body>
-    <header>
-        <img src="./media/cse-logo.png" class="imglogo" alt="QU CSE">
-        <nav class="navcontainer">
-            <ul>
-                <li><a href="admin.html">RETURN BACK</a></li>
-                
-               
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <img src="./media/cse-logo.png" class="imglogo" alt="QU CSE">
+    <nav class="navcontainer">
+      <ul>
+        <li><a href="admin.html">RETURN BACK</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <div class="form-container">
     <h2>Create a New Class</h2>
     <form id="classForm">
@@ -47,13 +46,71 @@
       <input type="text" id="prerequisite" name="prerequisite">
 
       <label for="image">Course Image URL</label>
-      <input type="url" id="image" name="image" oninput="updateImagePreview()">
+      <input type="url" id="image" name="image">
 
-      
-      <button type="submit">Create Class</button>
+      <button id="buttonSub" type="submit">Create Course</button>
     </form>
   </div>
 
-  
+  <script>
+    let courses = JSON.parse(localStorage.getItem("courses") || "[]");
+
+    // Function to get query parameters
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const courseToEditID = getQueryParam("courseID"); // Get the courseID from the URL
+
+    if (courseToEditID) {
+      // Edit mode: pre-fill form with existing course data
+      const course = courses.find(c => c.course_number === courseToEditID);
+      if (course) {
+        document.getElementById("course_name").value = course.course_name;
+        document.getElementById("course_number").value = course.course_number; // No longer disable this field
+        document.getElementById("course_instructor").value = course.course_instructor || "";
+        document.getElementById("capacity").value = course.capacity;
+        document.getElementById("registeredStudents").value = course.registeredStudents || 0;
+        document.getElementById("isOpen").checked = course.isOpen || false;
+        document.getElementById("category").value = course.category || "";
+        document.getElementById("prerequisite").value = course.prerequisite || "";
+        document.getElementById("image").value = course.image || "";
+        document.getElementById("buttonSub").textContent = "Update Course";
+      } else {
+        alert("Course not found");
+      }
+    }
+
+    document.querySelector("#classForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const newCourse = Object.fromEntries(formData.entries());
+      newCourse.isOpen = document.querySelector("#isOpen").checked;
+      newCourse.capacity = parseInt(newCourse.capacity, 10);
+      newCourse.registeredStudents = parseInt(newCourse.registeredStudents || "0", 10);
+
+      if (courseToEditID) {
+        // Update existing course
+        const index = courses.findIndex(c => c.course_number === courseToEditID);
+        if (index !== -1) {
+          // We found the course to update
+          courses[index] = newCourse;
+        } else {
+          alert("Course not found!");
+          return;
+        }
+      } else {
+        // Create new course
+        courses.push(newCourse);
+      }
+
+      localStorage.setItem("courses", JSON.stringify(courses));
+
+      alert(courseToEditID ? "Course updated!" : "Course created!");
+      window.location.href = "admin.html"; // Redirect to admin page
+    });
+  </script>
 </body>
 </html>

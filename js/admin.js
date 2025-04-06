@@ -4,8 +4,6 @@ let courses = [];
 const textField = document.querySelector("#cards");
 const search = document.querySelector("#searchBar");
  
-
-
 // Load courses from localStorage or fetch from JSON
 async function loadCourse() {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -85,7 +83,13 @@ function deleteCourse(courseID){
   }
 }
 
- 
+
+async function updateCourse(courseID) {
+    let edit = true;
+    // Corrected URL with proper encoding for both courseID and edit
+    window.location.href = `createCourseForm.html?courseID=${encodeURIComponent(courseID)}&edit=${encodeURIComponent(edit)}`;
+}
+
 // Load courses when the script runs
 loadCourse();
  
