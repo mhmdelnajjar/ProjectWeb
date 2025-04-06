@@ -10,14 +10,37 @@
           "grade": "F"
         }
       ],
-      "currentCourses": [{"course_number":""}],
-      "pendingCourses": [{"course_number":""}]
+      "currentCourses": [],
+      "pendingCourses": []
+    },
+    {
+      "userType": "student",
+      "username": "mhmd",
+      "password":"123",
+      "completedCourses": [
+        {
+          "course_number": "CM101",
+          "grade": "A"
+        }
+      ],
+      "currentCourses": [],
+      "pendingCourses": []
     }
     ,
     {
       "userType": "admin",
       "username": "amr",
       "password":"123"
+    },
+    {
+      "userType": "instructor",
+      "username": "ziad",
+      "password":"123",
+      "assignedCourses": [
+        {
+          "course_number":"CM101"
+        }
+      ]
     }
 
     

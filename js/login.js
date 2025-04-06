@@ -59,7 +59,7 @@ function validateUsers(usernameLogged, passwordLogged, users) {
         } else if (isFound.userType == "student") {
             window.location.href = `main.html`;
         } else if (isFound.userType == "instructor") {
-            window.location.href = `main.html`;
+            window.location.href = `inst.html`;
         } else {
             alert("User type not recognized!");
         }

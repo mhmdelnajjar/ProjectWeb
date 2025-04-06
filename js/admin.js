@@ -8,6 +8,7 @@ const searchBar = document.getElementById('searchBar');
 let courses = [];
 let pendingRequests = [];
 
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
@@ -26,7 +27,7 @@ function checkAuth() {
 // Load all data
 async function loadData() {
     try {
-        // Load approved courses
+    
         if (localStorage.courses) {
             courses = JSON.parse(localStorage.courses);
         } else {
@@ -142,10 +143,10 @@ function handleRequest(studentUsername, courseNumber, isApproved) {
             const [request] = user.pendingCourses.splice(requestIndex, 1);
             
             if (isApproved) {
-                // Add to approved courses
-                if (!user.approvedCourses) user.approvedCourses = [];
-                user.approvedCourses.push(request);
-                
+                // Add to current courses
+                if (!user.currentCourses) user.currentCourses = [];
+                user.currentCourses.push(request);
+            
                 // Update course capacity
                 const courseIndex = courses.findIndex(c => c.course_number === courseNumber);
                 if (courseIndex !== -1) {
