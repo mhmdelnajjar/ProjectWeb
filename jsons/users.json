@@ -13,6 +13,11 @@
       "currentCourses": [{"course_number":""}],
       "pendingCourses": [{"course_number":""}]
     }
-    
+    ,
+    {
+      "userType": "admin",
+      "username": "amr",
+      "password":"123"
+    }
   ]
 }

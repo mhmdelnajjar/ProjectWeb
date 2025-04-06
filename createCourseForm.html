@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Class Form</title>
+  <link rel="stylesheet" href="styles/create.css" />
+</head>
+<body>
+    <header>
+        <img src="./media/cse-logo.png" class="imglogo" alt="QU CSE">
+        <nav class="navcontainer">
+            <ul>
+                <li><a href="admin.html">RETURN BACK</a></li>
+                
+               
+            </ul>
+        </nav>
+    </header>
+  <div class="form-container">
+    <h2>Create a New Class</h2>
+    <form id="classForm">
+      <label for="course_name">Course Name</label>
+      <input type="text" id="course_name" name="course_name" required>
+
+      <label for="course_number">Course Number</label>
+      <input type="text" id="course_number" name="course_number" required>
+
+      <label for="course_instructor">Instructor</label>
+      <input type="text" id="course_instructor" name="course_instructor" required>
+
+      <label for="capacity">Capacity</label>
+      <input type="number" id="capacity" name="capacity" required>
+
+      <label for="registeredStudents">Registered Students</label>
+      <input type="number" id="registeredStudents" name="registeredStudents">
+
+      <label>
+        <input type="checkbox" id="isOpen" name="isOpen">
+        Is Open for Registration
+      </label>
+
+      <label for="category">Category</label>
+      <input type="text" id="category" name="category">
+
+      <label for="prerequisite">Prerequisite</label>
+      <input type="text" id="prerequisite" name="prerequisite">
+
+      <label for="image">Course Image URL</label>
+      <input type="url" id="image" name="image" oninput="updateImagePreview()">
+
+      
+      <button type="submit">Create Class</button>
+    </form>
+  </div>
+
+  
+</body>
+</html>

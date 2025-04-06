@@ -1,0 +1,112 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f6fa;
+    padding: 2rem;
+    margin: 0;
+  }
+  
+  /* --- HEADER FIX --- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--color-link);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  }
+  
+  .imglogo {
+    height: 60px;
+    width: auto;
+  }
+  
+  /* NAV STYLES */
+  .navcontainer ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .navcontainer ul li {
+    margin-left: 1rem;
+  }
+  
+  .navcontainer ul li a {
+    background: #ffffff;
+    color: var(--color-link);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.3s;
+  }
+  
+  .navcontainer ul li a:hover {
+    background-color: hwb(6 2% 73%);
+    color: white;
+  }
+  
+  /* FORM SECTION */
+  .form-container {
+    background: #ffffff;
+    max-width: 600px;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #34495e;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-link);
+    box-shadow: 0 0 4px var(--color-link);
+  }
+  
+  input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+  }
+  
+  button {
+    background-color: #27ae60;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #219150;
+  }
+  
