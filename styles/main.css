@@ -403,6 +403,10 @@ header{
 .logo {
     height: 50px;
     width: auto;
+    padding: 10px;
+    background-color: #f3a1a1;
+    box-shadow: 0 5px 10px rgba(219, 219, 219, 0.1);
+
 }
 
 .admin-nav ul {
@@ -410,7 +414,6 @@ header{
     padding: 0;
     margin: 0;
     list-style: none;
-    background: var(--falu-red-dark);
 }
 
 .admin-nav li {
@@ -427,9 +430,6 @@ header{
     transition: background 0.3s;
 }
 
-.admin-nav a:hover, .admin-nav a.active {
-    background: var(--falu-red-bright);
-}
 
 .admin-main {
     padding: 1rem;
@@ -576,8 +576,7 @@ header{
     font-weight: bold;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+  @media screen and (max-width: 768px){
     .dashboard-container {
         grid-template-columns: 1fr;
     }
@@ -586,8 +585,6 @@ header{
         height: auto;
         max-height: 50vh;
     }
-}
-  @media screen and (max-width: 768px){
     #contact{
         margin: 40px;
     }
@@ -629,6 +626,8 @@ header{
         margin-left: 75px;
         
     }
-    
+    .cseadmin{
+        display: none;
+    }
   
 }
