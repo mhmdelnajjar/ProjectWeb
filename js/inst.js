@@ -133,8 +133,16 @@ function submitGrade(studentUsername, courseNumber) {
 
     // Move from current to completed if the course is being graded
     student.currentCourses.splice(courseIndex, 1);
-    student.completedCourses = student.completedCourses || [];
-    student.completedCourses.push(course);
+try{
+const inn = student.completedCourses.findIndex(a => a.course_number == courseNumber);
+student.completedCourses.splice(inn,1)
+} catch {
+    
+    
+}
+
+
+    student.completedCourses.push({"course_number":course.course_number,"grade":course.grade});
 
     localStorage.setItem("users", JSON.stringify(usersData));
     alert(`Grade ${grade} submitted for ${student.username}`);

@@ -145,7 +145,7 @@ function handleRequest(studentUsername, courseNumber, isApproved) {
             if (isApproved) {
                 // Add to current courses
                 if (!user.currentCourses) user.currentCourses = [];
-                user.currentCourses.push(request);
+                user.currentCourses.push({"course_number":request.course_number,"course_name":request.course_name});
             
                 // Update course capacity
                 const courseIndex = courses.findIndex(c => c.course_number === courseNumber);
