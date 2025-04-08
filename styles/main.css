@@ -382,7 +382,22 @@ header{
     grid-area: footer;
   }
 
-
+  .grade-display {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 8px;
+    padding: 4px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  
+  /* If you want different colors for different grades */
+  .grade-display[data-grade="A"] { color: #27ae60; }
+  .grade-display[data-grade="B"] { color: #2980b9; }
+  .grade-display[data-grade="C"] { color: #f39c12; }
+  .grade-display[data-grade="D"] { color: #e74c3c; }
+  .grade-display[data-grade="F"] { color: #c0392b; }
   /*  new */
 
 .admin-header {

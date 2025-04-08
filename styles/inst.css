@@ -34,6 +34,7 @@
 * {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif'
 }
+
 .student-card {
     border: 1px solid #ddd;
     padding: 15px;
@@ -249,6 +250,24 @@ fieldset{
 .btn-submit-grade:hover {
     background-color: #a52a2a;
 }
+.logout-button{
+   
+    
+        margin-top: 1.5rem;
+        height:20px;
+        display: inline-flex;
+        align-items: center;
+        background-color: #530d0d;
+        color: white;
+        padding: 10px 20px;
+        font-size: 10px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      }
 
 /* Optional: Scroll behavior if too many courses per card */
 .course-grade-form {

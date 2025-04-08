@@ -62,6 +62,15 @@ function returnCards(courses) {
     const isCurrent = studentCourses.current.some(c => c.course_number === course.course_number);
     const isPending = studentCourses.pending.some(c => c.course_number === course.course_number);
     
+    // Find the course in student's records to get the grade if completed
+    const studentCourseRecord = studentCourses.completed.find(c => c.course_number === course.course_number) || 
+                              studentCourses.current.find(c => c.course_number === course.course_number) || 
+                              studentCourses.pending.find(c => c.course_number === course.course_number);
+    
+    const gradeDisplay = isCompleted && studentCourseRecord?.grade 
+      ? `<p class="grade-display">Grade: ${studentCourseRecord.grade}</p>` 
+      : '';
+    
     return `
       <fieldset>
         <div class="card1">
@@ -70,6 +79,7 @@ function returnCards(courses) {
             <h3>${course.course_name} (${course.course_number})</h3>
             <p>Instructor: ${course.course_instructor}</p>
             <p>Status: ${isCompleted ? '✅ Completed' : isCurrent ? '📚 In Progress' : isPending ? '🕒 Pending' : '🔵 Available'}</p>
+            ${gradeDisplay}
           </div>
         </div>
       </fieldset>

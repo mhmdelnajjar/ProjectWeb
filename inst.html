@@ -3,36 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSE instructor</title>
+    <title>CSE Instructor Portal</title>
     <link rel="stylesheet" href="styles/inst.css">
+    <style>
+        .courses-list {
+            margin-bottom: 2rem;
+        }
+        .course-item {
+            background: #f5f5f5;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-view-students {
+            padding: 0.5rem 1rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .students-table {
+            margin-top: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .grade-select {
+            padding: 8px;
+            margin-right: 10px;
+        }
+        .btn-submit-grade {
+            padding: 8px 12px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
-
 <body>
     <header>
         <div id="title">
             <img src="./media/cse-logo.png" alt="QU CSE">
-            <h1>CSE Registration</h1>
+            <h1>CSE Instructor Portal</h1>
+            <button class="logout-button" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> 
+            </button>
         </div>
-        <nav class="navcontainer">
-            <ul>
-                <li><a href="">SUBMIT GRADES</a></li>
-                <li><a id="abtus" href="#">ABOUT US</a></li>
-            </ul>
-        </nav>
     </header>
     <main>
-        <form >
-            <label for="search">Search for courses: </label>
-            <input type="text" placeholder="Search..." class="search-box">
-            <button type="submit" class="search-btn">
-                <img src="./media/icons/search.svg" alt="search">
-            </button>
-        </form>
-        <br><br>
-        <div class="students-container">
-
         <div id="students-container"></div>
-        </div>
     </main>
     <footer>
         <div id="keep-updated">
@@ -65,8 +99,11 @@
         </div>
     </footer>
     <script src="js/inst.js"></script>
-
+    <script>
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
-
-
 </html>
