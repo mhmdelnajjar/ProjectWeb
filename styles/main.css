@@ -2,12 +2,12 @@
 
 :root {
     /* color palette using custom properties (cascading variables) */
-    --falu-red: #721c1c;
+    --falu-red: #800020;
     --falu-red-light: #fef2f2;
     --falu-red-bright: #9a1a1a;
     --falu-red-200: #ffc9c9;
 
-    --falu-red-dark: #460909;
+    --falu-red-dark: #470314;
     --dark-grey: #121212;
 }
 
@@ -292,6 +292,24 @@ footer h2{
     font-family: 'helvetica-lt';
 }
 
+#btnreg {
+    background-color: #800020;
+    color: #fff;
+    padding:4px;
+    margin: 10px;
+    font-size: 1rem;
+    border:#460909;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  #btnreg:hover {
+    background-color: #a52a2a; /* lighter burgundy for hover */
+    transform: translateY(-2px);
+  }
+
 .action-btns {
     display: flex;
     justify-content: flex-end;
@@ -420,6 +438,7 @@ header{
     width: auto;
     padding: 10px;
         box-shadow: 0 5px 10px rgba(219, 219, 219, 0.1);
+        
 
 }
 
@@ -577,6 +596,9 @@ header{
     gap: 0.5rem;
     margin-bottom: 0.5rem;
 }
+.logoutword{
+    color: white;
+}
 
 .request-card .student-avatar {
     width: 30px;
@@ -641,6 +663,9 @@ header{
         
     }
     .cseadmin{
+        display: none;
+    }
+    .logoutword{
         display: none;
     }
   

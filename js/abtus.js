@@ -90,11 +90,11 @@ document.getElementById('abtus').addEventListener('click', function(event) {
 
 document.getElementById('homenav').addEventListener('click', function(event) {
     event.preventDefault();  
-    window.location.href = 'home.html';
+    window.location.href = 'main.html';
 });
 document.getElementById('regnav').addEventListener('click', function(event) {
     event.preventDefault();  
-    window.location.href = 'main.html';
+    alert("please go to home page first")
 });
 
 

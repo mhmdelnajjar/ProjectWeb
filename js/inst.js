@@ -148,3 +148,10 @@ student.completedCourses.splice(inn,1)
     alert(`Grade ${grade} submitted for ${student.username}`);
     viewStudents(courseNumber); // Refresh the view
 }
+
+document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+    localStorage.removeItem("currentUser")
+  });

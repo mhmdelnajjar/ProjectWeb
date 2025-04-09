@@ -94,15 +94,48 @@ h1 {
     padding: 1em;
 }
 
+
 #title {
     display: flex;
+    flex-direction: row;
     background-color: var(--color-link);
     padding: 1em;
     border-bottom: 3px outset white;
 }
 
+
 h2 {
     font-size: 1.2em;
+}
+
+.logout-button {
+    
+    margin-top: 1.5rem;
+    height:20px;
+    
+    background-color: #530d0d;
+    color: white;
+    padding: 10px 20px;
+    font-size: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+
+.logout-button i {
+    margin-right: 8px;
+  }
+
+.logout-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  
+  }
+.logoutword{
+    color: white;
 }
 
 nav ul {
@@ -252,7 +285,9 @@ fieldset{
 }
 .logout-button{
    
-    
+        position: absolute;
+        right: 1em;
+        top: 1em;
         margin-top: 1.5rem;
         height:20px;
         display: inline-flex;
@@ -314,3 +349,65 @@ footer {
 #contact p{
     color: var(--falu-red-light);
 }
+
+
+@media screen and (max-width: 768px){
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .panel {
+        height: auto;
+        max-height: 50vh;
+    }
+    #contact{
+        margin: 40px;
+    }
+    #keep-updated h2{
+        padding-top: 20px;
+    }
+    #keep-updated #socials{
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+    footer{
+        align-items: center;
+        
+        display: grid;
+        grid-template-columns: 1fr ; /* 25% for header, rest for login screen */
+        grid-template-rows:  auto ; /* Auto row for main content, 50px for footer */
+        grid-template-areas: 
+            "contact"
+            "updated"
+
+            ;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr ; /* 25% for header, rest for login screen */
+        grid-template-rows:  auto auto auto auto  ; /* Auto row for main content, 50px for footer */
+        grid-template-areas: 
+            "header header"
+            "nav nav"
+            "main main"
+            "footer footer"
+            ;
+    }
+
+    .cse{
+        margin-left: 75px;
+        
+    }
+    .cseadmin{
+        display: none;
+    }
+    .logoutword{
+        display: none;
+    }
+  
+}
+
+

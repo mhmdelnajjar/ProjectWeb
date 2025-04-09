@@ -105,7 +105,7 @@ function returnCardsForReg(courses) {
             <p class="${eligibility.canRegister ? 'eligible' : 'ineligible'}">
               ${isRegistered ? 'Already registered' : eligibility.reason}
             </p>
-            <button class="${eligibility.canRegister ? '' : 'disabled'}" 
+            <button id="btnreg" class="${eligibility.canRegister ? '' : 'disabled'}" 
                     ${eligibility.canRegister ? `onclick="attemptRegistration('${course.course_number}')"` : 'disabled'}>
               ${isRegistered ? 'Registered' : eligibility.canRegister ? 'Register' : 'Cannot Register'}
             </button>

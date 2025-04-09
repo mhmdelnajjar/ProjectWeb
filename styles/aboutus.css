@@ -308,3 +308,62 @@ footer h2{
 
 }
 
+@media screen and (max-width: 768px){
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .panel {
+        height: auto;
+        max-height: 50vh;
+    }
+    #contact{
+        margin: 40px;
+    }
+    #keep-updated h2{
+        padding-top: 20px;
+    }
+    #keep-updated #socials{
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+    footer{
+        align-items: center;
+        
+        display: grid;
+        grid-template-columns: 1fr ; /* 25% for header, rest for login screen */
+        grid-template-rows:  auto ; /* Auto row for main content, 50px for footer */
+        grid-template-areas: 
+            "contact"
+            "updated"
+
+            ;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr ; /* 25% for header, rest for login screen */
+        grid-template-rows:  auto auto auto auto  ; /* Auto row for main content, 50px for footer */
+        grid-template-areas: 
+            "header header"
+            "nav nav"
+            "main main"
+            "footer footer"
+            ;
+    }
+
+    .cse{
+        margin-left: 75px;
+        
+    }
+    .cseadmin{
+        display: none;
+    }
+    .logoutword{
+        display: none;
+    }
+  
+}
+

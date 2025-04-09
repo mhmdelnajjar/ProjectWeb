@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSE Instructor Portal</title>
     <link rel="stylesheet" href="styles/inst.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         .courses-list {
             margin-bottom: 2rem;
@@ -58,11 +60,14 @@
 <body>
     <header>
         <div id="title">
-            <img src="./media/cse-logo.png" alt="QU CSE">
-            <h1>CSE Instructor Portal</h1>
-            <button class="logout-button" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> 
-            </button>
+            <div id="title">
+                <img class="logo" src="./media/cse-logo.png" alt="QU CSE">
+                <h1 class="cse">CSE Registration</h1>
+                
+                <button id ="logoutBtn" class="logout-button">
+                  <i class="fa fa-sign-out-alt"></i> <p class="logoutword">Logout</p>
+                </button>
+              </div>
         </div>
     </header>
     <main>
