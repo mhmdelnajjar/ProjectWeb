@@ -5,13 +5,9 @@
       "username": "abood",
       "password":"123",
       "completedCourses": [
-        {
-          "course_number": "CM101",
-          "grade": "F"
-        }
+        
       ],
-      "currentCourses": [],
-      "pendingCourses": []
+      "currentCourses": []  
     },
     {
       "userType": "student",
@@ -27,8 +23,7 @@
         {
           "course_number":"CM101"
         }
-      ],
-      "pendingCourses": []
+      ]
     }
     ,
     {

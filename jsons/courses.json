@@ -6,7 +6,7 @@
       "course_instructor": "Dr. Mohammed Saleh",
       "capacity": 100,
       "registeredStudents": 25,
-      "isOpen": true,
+      "isOpen": false,
       "category": "OOP",
       "prerequisite": "Introduction to Programming",
       "image": "https://miro.medium.com/v2/resize:fit:1200/1*ENym9k9bNQkkyCe5zdwucA.png"
@@ -28,7 +28,7 @@
       "course_instructor": "Dr. Rehab Al-Duwairi",
       "capacity": 120,
       "registeredStudents": 45,
-      "isOpen": true,
+      "isOpen": false,
       "category": "Database",
       "prerequisite": "Data Structures",
       "image": "https://th.bing.com/th/id/OIP.Y9AQiNAgELhwV2SW8IzqTwHaE3?rs=1&pid=ImgDetMain"
@@ -39,7 +39,7 @@
       "course_instructor": "Dr. Fatima Al-Habib",
       "capacity": 90,
       "registeredStudents": 60,
-      "isOpen": true,
+      "isOpen": false,
       "category": "Database",
       "prerequisite": "Database Management Systems",
       "image": "https://th.bing.com/th/id/OIP.N0qZZxcXoVPiLQlUkEW0NgHaD6?rs=1&pid=ImgDetMain"
@@ -50,7 +50,7 @@
       "course_instructor": "Dr. Mahmoud Barhamgi",
       "capacity": 85,
       "registeredStudents": 30,
-      "isOpen": true,
+      "isOpen": false,
       "category": "WEB",
       "prerequisite": "",
       "image": "https://th.bing.com/th/id/OIP.mTZEWl1LGBJJd3bwUTtxYAHaEK?rs=1&pid=ImgDetMain"
@@ -61,7 +61,7 @@
       "course_instructor": "Dr. Ziad Ali",
       "capacity": 100,
       "registeredStudents": 0,
-      "isOpen": true,
+      "isOpen": false,
       "category": "Programming",
       "prerequisite": "",
       "image": "https://th.bing.com/th/id/R.17fa123af066c303b45d7c79afdf99e0?rik=vUyT1LUDEYPfkQ&riu=http%3a%2f%2fdesigndrizzle.com%2fwp-content%2fuploads%2fpython2.jpg&ehk=e4Gc4ony9L5ELi4oc55o6tLkFu35e4vmDE7LM%2fIVCVI%3d&risl=&pid=ImgRaw&r=0"

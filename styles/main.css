@@ -419,8 +419,7 @@ header{
     height: 50px;
     width: auto;
     padding: 10px;
-    background-color: #f3a1a1;
-    box-shadow: 0 5px 10px rgba(219, 219, 219, 0.1);
+        box-shadow: 0 5px 10px rgba(219, 219, 219, 0.1);
 
 }
 
@@ -645,4 +644,42 @@ header{
         display: none;
     }
   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* styles for admin */
+
+.btn-toggle-approve {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-toggle-approve.approved {
+    background-color: #f44336;
+}
+
+.btn-toggle-approve:hover {
+    opacity: 0.8;
 }

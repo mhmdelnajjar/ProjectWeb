@@ -13,10 +13,9 @@ async function initializeUsers() {
             const response = await fetch('jsons/users.json');
             const data = await response.json();
 
-
-            const response2 =await fetch("jsons/courses.json")
-            const data2 =await response2.json()
-            localStorage.courses = JSON.stringify(data2.courses)
+            const response2 = await fetch("jsons/courses.json");
+            const data2 = await response2.json();
+            localStorage.courses = JSON.stringify(data2.courses);
             
             // Store the usersArray in localStorage
             localStorage.setItem('users', JSON.stringify(data.usersArray));
@@ -35,6 +34,12 @@ initializeUsers();
 
 function handleLogin(e) {
     e.preventDefault();
+    
+    // Clear any previous error messages
+    const errorElement = document.querySelector("#loginError");
+    if (errorElement) {
+        errorElement.remove();
+    }
     
     // Get users from localStorage
     const storedUsers = localStorage.getItem('users');
@@ -61,9 +66,32 @@ function validateUsers(usernameLogged, passwordLogged, users) {
         } else if (isFound.userType == "instructor") {
             window.location.href = `inst.html`;
         } else {
-            alert("User type not recognized!");
+            showLoginError("User type not recognized!");
         }
     } else {
-        alert("No account found. Please check your credentials or contact the admin.");
+        showLoginError("Invalid username or password. Please try again.");
     }
+}
+
+function showLoginError(message) {
+    // Remove any existing error messages
+    const existingError = document.querySelector("#loginError");
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Create error message element
+    const errorElement = document.createElement("div");
+    errorElement.id = "loginError";
+    errorElement.style.color = "red";
+    errorElement.style.marginTop = "5px";
+    errorElement.style.fontSize = "14px";
+    errorElement.textContent = message;
+    
+    // Insert after password field
+    const passwordField = document.querySelector("#password");
+    passwordField.insertAdjacentElement("afterend", errorElement);
+    
+    // Focus back on password field
+    passwordField.focus();
 }
