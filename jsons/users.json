@@ -5,7 +5,9 @@
       "username": "aj210@qu.edu.qa",
       "password":"123456",
       "completedCourses": [],
-      "currentCourses": []  
+      "currentCourses": [] ,
+      "pendingCourses":[]
+      
     },
     {
       "userType": "student",
@@ -17,7 +19,9 @@
           "grade": "A"
         }
       ],
-      "currentCourses": []
+      "currentCourses": [],
+      "pendingCourses":[]
+      
     }
     ,
     {

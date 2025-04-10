@@ -163,12 +163,40 @@ function setupEventListeners() {
     })
 
     document.getElementById("approveAllst").addEventListener("click",function() {
-        
-    })
+        const users = JSON.parse(localStorage.users);
+        users.forEach(user => {
+            if (user.userType === 'student' && user.pendingCourses && user.pendingCourses.length > 0) {
+                user.pendingCourses.forEach(course => {
+                    if (!user.currentCourses) user.currentCourses = [];
+                    user.currentCourses.push({"course_number": course.course_number, "course_name": course.course_name});
+                    const courseIndex = courses.findIndex(c => c.course_number === course.course_number);
+                    if (courseIndex !== -1) {
+                        courses[courseIndex].capacity--;
+                    }
+                });
+                user.pendingCourses = [];
+            }
+        });
+        localStorage.users = JSON.stringify(users);
+        localStorage.courses = JSON.stringify(courses);
+        loadPendingRequests();
+        renderCourses(courses);
+        renderPendingRequests(pendingRequests);
+        alert("All Student Requests Have Been Approved");
+    });
 
     document.getElementById("rejectAllst").addEventListener("click",function() {
-       
-    })
+        const users = JSON.parse(localStorage.users);
+        users.forEach(user => {
+            if (user.userType === 'student' && user.pendingCourses && user.pendingCourses.length > 0) {
+                user.pendingCourses = [];
+            }
+        });
+        localStorage.users = JSON.stringify(users);
+        loadPendingRequests();
+        renderPendingRequests(pendingRequests);
+        alert("All Student Requests Have Been Rejected");
+    });
 }
 
 // Logout

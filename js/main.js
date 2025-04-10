@@ -58,10 +58,12 @@ function displayCourses(filteredCourses) {
     ? returnCardsForReg(approvedCourses) 
     : returnCards(approvedCourses);
 }
+
 function returnCards(courses) {
   return courses.map(course => {
     const isCompleted = studentCourses.completed.some(c => c.course_number === course.course_number);
     const isCurrent = studentCourses.current.some(c => c.course_number === course.course_number);
+    const isPending = studentCourses.pending.some(c => c.course_number === course.course_number);
     
     const studentCourseRecord = studentCourses.completed.find(c => c.course_number === course.course_number) || 
                               studentCourses.current.find(c => c.course_number === course.course_number);
@@ -70,6 +72,11 @@ function returnCards(courses) {
       ? `<p class="grade-display">Grade: ${studentCourseRecord.grade}</p>` 
       : '';
     
+    let statusText = '🔵 Available';
+    if (isCompleted) statusText = '✅ Completed';
+    else if (isCurrent) statusText = '📚 Registered';
+    else if (isPending) statusText = '⏳ Pending Approval';
+    
     return `
       <fieldset>
         <div class="card1">
@@ -77,7 +84,7 @@ function returnCards(courses) {
           <div class="words">
             <h3>${course.course_name} (${course.course_number})</h3>
             <p>Instructor: ${course.course_instructor}</p>
-            <p>Status: ${isCompleted ? '✅ Completed' : isCurrent ? '📚 Registered' : '🔵 Available'}</p>
+            <p>Status: ${statusText}</p>
             ${gradeDisplay}
           </div>
         </div>
@@ -89,8 +96,9 @@ function returnCards(courses) {
 function returnCardsForReg(courses) {
   return courses.filter(course => course.isOpen).map(course => {
     const isRegistered = studentCourses.current.some(c => c.course_number === course.course_number);
-    const eligibility = isRegistered ? 
-      { canRegister: false, reason: "Already registered" } : 
+    const isPending = studentCourses.pending.some(c => c.course_number === course.course_number);
+    const eligibility = isRegistered || isPending ? 
+      { canRegister: false, reason: isRegistered ? "Already registered" : "Pending approval" } : 
       checkCourseEligibility(course);
     
     const availableSeats = course.capacity - (course.registeredStudents || 0);
@@ -103,11 +111,11 @@ function returnCardsForReg(courses) {
             <h3>${course.course_name} (${course.course_number})</h3>
             <p>Seats: ${availableSeats}/${course.capacity}</p>
             <p class="${eligibility.canRegister ? 'eligible' : 'ineligible'}">
-              ${isRegistered ? 'Already registered' : eligibility.reason}
+              ${isRegistered ? 'Already registered' : isPending ? 'Pending approval' : eligibility.reason}
             </p>
             <button id="btnreg" class="${eligibility.canRegister ? '' : 'disabled'}" 
                     ${eligibility.canRegister ? `onclick="attemptRegistration('${course.course_number}')"` : 'disabled'}>
-              ${isRegistered ? 'Registered' : eligibility.canRegister ? 'Register' : 'Cannot Register'}
+              ${isRegistered ? 'Registered' : isPending ? 'Pending' : eligibility.canRegister ? 'Register' : 'Cannot Register'}
             </button>
           </div>
         </div>
@@ -125,29 +133,28 @@ function checkCourseEligibility(course) {
   if (studentCourses.current.some(c => c.course_number === course.course_number)) {
     return { canRegister: false, reason: "Already registered" };
   }
-  
-  const ifTaken = studentCourses.completed.find(c=>c.course_number==course.course_number)
-  if (ifTaken)  return {
-     canRegister: false, 
-      reason: `Course Has Been Already Taken!`
+  if (studentCourses.pending.some(c => c.course_number === course.course_number)) {
+    return { canRegister: false, reason: "Pending approval" };
   }
+  
+  const ifTaken = studentCourses.completed.find(c => c.course_number === course.course_number);
+  if (ifTaken) return {
+    canRegister: false, 
+    reason: "Course already taken"
+  };
+  
   return checkPrerequisites(course.prerequisite);
 }
 
 function checkPrerequisites(prerequisite) {
   if (!prerequisite?.trim()) return { canRegister: true, reason: "No prerequisites" };
   
-  const requiredCourses = prerequisite.split(',').map(p => p.trim())
-
-  
- 
+  const requiredCourses = prerequisite.split(',').map(p => p.trim());
   
   for (const requiredCourse of requiredCourses) {
     const completedCourse = studentCourses.completed.find(c => 
-      c.course_number == requiredCourse.split(":")[1]
+      c.course_number === requiredCourse.split(":")[1]
     );
-
-    
     
     // Check if prerequisite was completed with passing grade
     if (!completedCourse || completedCourse.grade === 'F') {
@@ -160,6 +167,7 @@ function checkPrerequisites(prerequisite) {
   
   return { canRegister: true, reason: "Prerequisites met" };
 }
+
 function attemptRegistration(courseNumber) {
   const course = courses.find(c => c.course_number === courseNumber);
   if (!course) return;
@@ -171,32 +179,36 @@ function attemptRegistration(courseNumber) {
     return;
   }
   
-  // Add to pending (in real app, send to server)
-  studentCourses.pending.push({
+  // Get current user and all users
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const allUsers = JSON.parse(localStorage.getItem('users')) || [];
+  const student = allUsers.find(u => u.username === currentUser.username);
+  
+  if (!student) return;
+  
+  // Initialize arrays if they don't exist
+  if (!student.pendingCourses) student.pendingCourses = [];
+  if (!course.registeredStudents) course.registeredStudents = 0;
+  
+  // Add to pending courses
+  student.pendingCourses.push({
     course_number: course.course_number,
     course_name: course.course_name,
-    instructor: course.course_instructor,
-    status: "Pending Approval"
+    course_instructor: course.course_instructor,
+    status: "Pending"
   });
   
-  alert(`Successfully requested registration for ${course.course_name}`);
-  displayCourses(courses); // Refresh view
-}
-
-
-function approvePendingCourse(courseNumber) {
-  const allUsers = JSON.parse(localStorage.getItem('users'));
-  const user = allUsers.find(u => u.username === JSON.parse(localStorage.getItem('currentUser')).username);
+  // Update course registration count
+  course.registeredStudents++;
   
-  // Move from pending to current
-  const pendingIndex = user.pendingCourses.findIndex(c => c.course_number === courseNumber);
-  if (pendingIndex !== -1) {
-    const approvedCourse = user.pendingCourses.splice(pendingIndex, 1)[0];
-    user.currentCourses.push(approvedCourse);
-    localStorage.setItem('users', JSON.stringify(allUsers));
-    updateLocalState();
-    displayCourses(courses);
-  }
+  // Save updates
+  localStorage.setItem('users', JSON.stringify(allUsers));
+  localStorage.setItem('courses', JSON.stringify(courses));
+  
+  // Update local state and UI
+  updateLocalState();
+  displayCourses(courses);
+  alert(`Registration request for ${course.course_name} submitted for approval!`);
 }
 
 function updateLocalState() {
@@ -204,11 +216,13 @@ function updateLocalState() {
   const allUsers = JSON.parse(localStorage.getItem('users')) || [];
   const student = allUsers.find(u => u.username === currentUser.username);
   
-  studentCourses = {
-    completed: student.completedCourses || [],
-    current: student.currentCourses || [],
-    pending: student.pendingCourses || []
-  };
+  if (student) {
+    studentCourses = {
+      completed: student.completedCourses || [],
+      current: student.currentCourses || [],
+      pending: student.pendingCourses || []
+    };
+  }
 }
 
 // Event Listeners
@@ -248,7 +262,6 @@ function allEventListeners() {
     e.preventDefault();
     localStorage.removeItem('currentUser');
     window.location.href = 'login.html';
-    localStorage.removeItem("currentUser")
   });
 }
 
