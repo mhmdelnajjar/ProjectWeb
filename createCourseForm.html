@@ -26,7 +26,7 @@
       <input type="text" id="course_number" name="course_number" required>
 
       <label for="course_instructor">Instructor</label>
-      <input type="text" id="course_instructor" name="course_instructor" required>
+      <select id="course_instructor" name="course_instructor" required></select>
 
       <label for="capacity">Capacity</label>
       <input type="number" id="capacity" name="capacity" required>
@@ -54,6 +54,10 @@
 
   <script>
     let courses = JSON.parse(localStorage.getItem("courses") || "[]");
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+   
+    let instructors = users.filter(a => a.userType == "instructor");
+    instructors = instructors.map(a => a.username.split("@")[0]);
 
     // Function to get query parameters
     function getQueryParam(param) {
@@ -62,6 +66,17 @@
     }
 
     const courseToEditID = getQueryParam("courseID"); // Get the courseID from the URL
+
+    // Populate the instructor dropdown
+    function populateInstructorDropdown() {
+        const instructorSelect = document.getElementById("course_instructor");
+        instructors.forEach(instructor => {
+            const option = document.createElement("option");
+            option.value = instructor;
+            option.textContent = instructor;
+            instructorSelect.appendChild(option);
+        });
+    }
 
     if (courseToEditID) {
       // Edit mode: pre-fill form with existing course data
@@ -82,11 +97,15 @@
       }
     }
 
+    // Populate the instructor dropdown when the script runs
+    populateInstructorDropdown();
+
     document.querySelector("#classForm").addEventListener("submit", function (e) {
       e.preventDefault();
 
       const formData = new FormData(e.target);
       const newCourse = Object.fromEntries(formData.entries());
+      
       newCourse.isOpen = document.querySelector("#isOpen").checked;
       newCourse.capacity = parseInt(newCourse.capacity, 10);
       newCourse.registeredStudents = parseInt(newCourse.registeredStudents || "0", 10);
