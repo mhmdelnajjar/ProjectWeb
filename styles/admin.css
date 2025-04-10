@@ -113,12 +113,16 @@ form {
 form *{
     margin: auto 0.3em;
 }
+#rejectAll {
+    border-radius: 1rem;
 
+}
 .search-box {
     padding: 0.65em;
     border: 1px solid #ddd;
     border-radius: 0.6em;
-    width: 12em;
+    width: 5rem;
+    
 }
 
 .search-btn {

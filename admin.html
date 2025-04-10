@@ -29,14 +29,21 @@
         <div class="dashboard-container">
             <!-- Approved Courses Panel -->
             <section class="panel courses-panel">
-                <div class="panel-header">
+                <div class="panel-header" style="height: 150px; display: flex; flex-direction: column;">
                     <h2><i class="fas fa-book"></i> Approved Courses</h2>
-                    <div class="search-box">
+                    
+                    <div class="search-box" style="width: 13.5rem;">
+                        
                         <input type="text" id="searchBar" placeholder="Search courses...">
                         <button class="search-btn">
                             <i class="fas fa-search"></i>
                         </button>
+                        
                     </div>
+                    <div>
+                    <button id="approveAll" style="border-radius: 1rem; background-color:red; color: white; cursor: pointer;">Aprrove All</button>
+                    <button id="rejectAll" style="border-radius: 1rem; background-color: red; color: white; cursor: pointer;">Reject All</button>
+                </div>
                 </div>
                 <div class="panel-content" id="courses-container">
                     <!-- Courses will be loaded here -->
@@ -45,10 +52,17 @@
 
             <!-- Pending Requests Panel -->
             <section class="panel requests-panel">
-                <div class="panel-header">
+                <div class="panel-header" style="height:75px; display: flex; flex-direction: column;">
+                    
                     <h2><i class="fas fa-clock"></i> Pending Requests</h2>
-                    <span class="badge" id="pending-count">0</span>
+    
+                    <span class="badge"  id="pending-count">0</span>
+                    <div style="gap: 0.3rem;">
+                    <button id="approveAllst" style="border-radius: 1rem; background-color:red; color: white; cursor: pointer;">Aprrove All</button>
+                    <button id="rejectAllst" style="border-radius: 1rem; background-color: red; color: white; cursor: pointer;">Reject All</button>
                 </div>
+                </div>
+                
                 <div class="panel-content" id="requests-container">
                     <!-- Pending requests will be loaded here -->
                 </div>

@@ -137,8 +137,6 @@ function deleteCourse(courseNumber) {
     }
 }
 
-function approveCourse(courseNumber){}
-
 
 function setupEventListeners() {
     searchBar.addEventListener('input', (e) => {
@@ -150,6 +148,27 @@ function setupEventListeners() {
         );
         renderCourses(filtered);
     });
+    document.getElementById("approveAll").addEventListener("click",function() {
+        courses.forEach(a=> a.isOpen=true);
+        renderCourses(courses)
+        localStorage.setItem('courses', JSON.stringify(courses));
+        alert("All Courses Have Been Approved")
+    })
+
+    document.getElementById("rejectAll").addEventListener("click",function() {
+        courses.forEach(a=>a.isOpen=false)
+        renderCourses(courses)
+        localStorage.setItem('courses', JSON.stringify(courses));
+        alert("All Courses Have Been Approved")
+    })
+
+    document.getElementById("approveAllst").addEventListener("click",function() {
+        
+    })
+
+    document.getElementById("rejectAllst").addEventListener("click",function() {
+       
+    })
 }
 
 // Logout
@@ -160,74 +179,70 @@ function logout() {
 
 
 
-
-
-
-
-// function renderPendingRequests(requests) {
-//     if (requests.length === 0) {
-//         requestsContainer.innerHTML = '<p class="no-results">No pending requests</p>';
-//         return;
-//     }
+function renderPendingRequests(requests) {
+    if (requests.length === 0) {
+        requestsContainer.innerHTML = '<p class="no-results" style="color: black;">No pending requests</p>';
+        return;
+    }
     
-//     requestsContainer.innerHTML = requests.map(request => `
-//         <div class="request-card" data-id="${request.course_number}" data-student="${request.student.username}">
-//             <div class="student-info">
-//                 <div class="student-avatar">${request.student.name.charAt(0).toUpperCase()}</div>
-//                 <div>
-//                     <strong>${request.student.name}</strong>
+    requestsContainer.innerHTML = requests.map(request => `
+        <div class="request-card" data-id="${request.course_number}" data-student="${request.student.username}">
+            <div class="student-info">
+                <div class="student-avatar">${request.student.name.charAt(0).toUpperCase()}</div>
+                <div>
+                    <strong>${request.student.name}</strong>
    
-//                 </div>
-//             </div>
-//             <h3>${request.course_name}</h3>
-//             <div class="course-meta">
-//                 <p><strong>Code:</strong> ${request.course_number}</p>
-//                 <p><strong>Requested:</strong> ${new Date(request.timestamp || Date.now()).toLocaleDateString()}</p>
-//             </div>
-//             <div class="course-actions">
-//                 <button class="btn-approve" onclick="handleRequest('${request.student.username}', '${request.course_number}', true)">
-//                     <i class="fas fa-check"></i> Approve
-//                 </button>
-//                 <button class="btn-reject" onclick="handleRequest('${request.student.username}', '${request.course_number}', false)">
-//                     <i class="fas fa-times"></i> Reject
-//                 </button>
-//             </div>
-//         </div>
-//     `).join('');
-// }
+                </div>
+            </div>
+            <h3>${request.course_name}</h3>
+            <div class="course-meta">
+                <p><strong>Code:</strong> ${request.course_number}</p>
+                <p><strong>Requested:</strong> ${new Date(request.timestamp || Date.now()).toLocaleDateString()}</p>
+            </div>
+            <div class="course-actions">
+                <button class="btn-approve" onclick="handleRequest('${request.student.username}', '${request.course_number}', true)">
+                    <i class="fas fa-check"></i> Approve
+                </button>
+                <button class="btn-reject" onclick="handleRequest('${request.student.username}', '${request.course_number}', false)">
+                    <i class="fas fa-times"></i> Reject
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
 
 
-// function handleRequest(studentUsername, courseNumber, isApproved) {
-//     const users = JSON.parse(localStorage.users);
-//     const userIndex = users.findIndex(u => u.username === studentUsername);
+function handleRequest(studentUsername, courseNumber, isApproved) {
+    const users = JSON.parse(localStorage.users);
+    const userIndex = users.findIndex(u => u.username === studentUsername);
     
-//     if (userIndex !== -1) {
-//         const user = users[userIndex];
-//         const requestIndex = user.pendingCourses.findIndex(c => c.course_number === courseNumber);
+    if (userIndex !== -1) {
+        const user = users[userIndex];
+        const requestIndex = user.pendingCourses.findIndex(c => c.course_number === courseNumber);
         
-//         if (requestIndex !== -1) {
-//             const [request] = user.pendingCourses.splice(requestIndex, 1);
+        if (requestIndex !== -1) {
+            const [request] = user.pendingCourses.splice(requestIndex, 1);
             
-//             if (isApproved) {
-//                 // Add to current courses
-//                 if (!user.currentCourses) user.currentCourses = [];
-//                 user.currentCourses.push({"course_number":request.course_number,"course_name":request.course_name});
+            if (isApproved) {
+                // Add to current courses
+                if (!user.currentCourses) user.currentCourses = [];
+                user.currentCourses.push({"course_number":request.course_number,"course_name":request.course_name});
             
-//                 // Update course capacity
-//                 const courseIndex = courses.findIndex(c => c.course_number === courseNumber);
-//                 if (courseIndex !== -1) {
-//                     courses[courseIndex].capacity--;
-//                     localStorage.courses = JSON.stringify(courses);
-//                 }
-//             }
+                // Update course capacity
+                const courseIndex = courses.findIndex(c => c.course_number === courseNumber);
+                if (courseIndex !== -1) {
+                    courses[courseIndex].capacity--;
+                    localStorage.courses = JSON.stringify(courses);
+                }
+            }
             
-//             // Update user data
-//             localStorage.users = JSON.stringify(users);
+            // Update user data
+            localStorage.users = JSON.stringify(users);
             
-//             // Refresh displays
-//             loadPendingRequests();
-//             renderCourses(courses);
-//             renderPendingRequests(pendingRequests);
-//         }
-//     }
-// }
+            // Refresh displays
+            loadPendingRequests();
+            renderCourses(courses);
+            renderPendingRequests(pendingRequests);
+        }
+    }
+}

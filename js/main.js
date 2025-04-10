@@ -126,66 +126,62 @@ function checkCourseEligibility(course) {
     return { canRegister: false, reason: "Already registered" };
   }
   
+  const ifTaken = studentCourses.completed.find(c=>c.course_number==course.course_number)
+  if (ifTaken)  return {
+     canRegister: false, 
+      reason: `Course Has Been Already Taken!`
+  }
   return checkPrerequisites(course.prerequisite);
 }
 
 function checkPrerequisites(prerequisite) {
   if (!prerequisite?.trim()) return { canRegister: true, reason: "No prerequisites" };
   
-  const requiredCourses = prerequisite.split(',').map(p => p.trim());
+  const requiredCourses = prerequisite.split(',').map(p => p.trim())
+
+  
+ 
   
   for (const requiredCourse of requiredCourses) {
     const completedCourse = studentCourses.completed.find(c => 
-      c.course_number === requiredCourse
+      c.course_number == requiredCourse.split(":")[1]
     );
+
+    
     
     // Check if prerequisite was completed with passing grade
     if (!completedCourse || completedCourse.grade === 'F') {
       return { 
         canRegister: false, 
-        reason: `Missing or failed prerequisite: ${requiredCourse}`
+        reason: `Missing or failed prerequisite: ${requiredCourse.split(":")[0]}`
       };
     }
   }
   
   return { canRegister: true, reason: "Prerequisites met" };
 }
-
-// State Management (Updates localStorage)
 function attemptRegistration(courseNumber) {
   const course = courses.find(c => c.course_number === courseNumber);
-  if (!course) return alert("Course not found");
-
-  // Check if course is available
-  if (!course.isOpen) return alert("This course is not currently available");
-
-  // Check capacity
-  if (course.capacity <= (course.registeredStudents || 0)) {
-    return alert("This course is full");
-  }
-
-  // Update courses (increase registered count)
-  course.registeredStudents = (course.registeredStudents || 0) + 1;
-  localStorage.setItem('courses', JSON.stringify(courses));
-
-  // Update user (add directly to current courses)
-  const allUsers = JSON.parse(localStorage.getItem('users'));
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  const user = allUsers.find(u => u.username === currentUser.username);
+  if (!course) return;
   
-  if (!user.currentCourses) user.currentCourses = [];
-  user.currentCourses.push({
+  // Verify eligibility again
+  const eligibility = checkCourseEligibility(course);
+  if (!eligibility.canRegister) {
+    alert(`Cannot register: ${eligibility.reason}`);
+    return;
+  }
+  
+  // Add to pending (in real app, send to server)
+  studentCourses.pending.push({
     course_number: course.course_number,
     course_name: course.course_name,
-    status: "Registered" // Add status directly
+    instructor: course.course_instructor,
+    status: "Pending Approval"
   });
   
-  localStorage.setItem('users', JSON.stringify(allUsers));
-  updateLocalState();
-  displayCourses(courses);
-  alert(`Successfully registered for ${course.course_name}!`);
+  alert(`Successfully requested registration for ${course.course_name}`);
+  displayCourses(courses); // Refresh view
 }
-
 
 
 function approvePendingCourse(courseNumber) {

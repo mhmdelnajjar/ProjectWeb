@@ -8,7 +8,7 @@
       "registeredStudents": 25,
       "isOpen": false,
       "category": "OOP",
-      "prerequisite": "Introduction to Programming",
+      "prerequisite": "Introduction to Programming:CM101",
       "image": "https://miro.medium.com/v2/resize:fit:1200/1*ENym9k9bNQkkyCe5zdwucA.png"
     },
     {
@@ -19,7 +19,7 @@
       "registeredStudents": 70,
       "isOpen": false,
       "category": "OOP",
-      "prerequisite": "Object-Oriented Programming Principles",
+      "prerequisite": "Object-Oriented Programming Principles:CS101",
       "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrspWj1e4MOJ5DA4ndm3Q2BGAJY_t51_aWvUoTkosrGSzJk1L3r13Q9GK7CnGEGS6EBFlZpuov9ulyZX2lXIXssyb3bedgjMU8XDo1jBksB4Ttge2gM9k4Y4351Fy487uUO2mN3-D4qYXT/s1280/Blog-Object-Oriented-Programming.jpg"
     },
     {
@@ -30,7 +30,7 @@
       "registeredStudents": 45,
       "isOpen": false,
       "category": "Database",
-      "prerequisite": "Data Structures",
+      "prerequisite": "Data Structures:CS350",
       "image": "https://th.bing.com/th/id/OIP.Y9AQiNAgELhwV2SW8IzqTwHaE3?rs=1&pid=ImgDetMain"
     },
     {
@@ -41,7 +41,7 @@
       "registeredStudents": 60,
       "isOpen": false,
       "category": "Database",
-      "prerequisite": "Database Management Systems",
+      "prerequisite": "Database Management Systems:CS301",
       "image": "https://th.bing.com/th/id/OIP.N0qZZxcXoVPiLQlUkEW0NgHaD6?rs=1&pid=ImgDetMain"
     },
     {

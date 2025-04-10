@@ -2,39 +2,33 @@
   "usersArray": [
     {
       "userType": "student",
-      "username": "abood",
-      "password":"123",
-      "completedCourses": [
-        
-      ],
+      "username": "aj210@qu.edu.qa",
+      "password":"123456",
+      "completedCourses": [],
       "currentCourses": []  
     },
     {
       "userType": "student",
-      "username": "mhmd",
-      "password":"123",
+      "username": "me220@qu.edu.qa",
+      "password":"123456",
       "completedCourses": [
         {
           "course_number": "CM101",
           "grade": "A"
         }
       ],
-      "currentCourses": [
-        {
-          "course_number":"CM101"
-        }
-      ]
+      "currentCourses": []
     }
     ,
     {
       "userType": "admin",
-      "username": "amr",
+      "username": "amr@qu.edu.qa",
       "password":"123"
     },
     {
       "userType": "instructor",
-      "username": "ziad",
-      "password":"123",
+      "username": "ziad@qu.edu.qa",
+      "password":"123456",
       "assignedCourses": [
         {
           "course_number":"CM101"
@@ -43,8 +37,8 @@
     },
     {
       "userType": "instructor",
-      "username": "barhamgi",
-      "password":"123",
+      "username": "barhamgi@qu.edu.qa",
+      "password":"123456",
       "assignedCourses": [
         {
           "course_number":"CS351"
