@@ -1,0 +1,128 @@
+:root {
+    /* Color palette */
+    --falu-red: #721c1c;
+    --falu-red-light: #fef2f2;
+    --falu-red-bright: #9a1a1a;
+    --falu-red-dark: #460909;
+    --dark-grey: #121212;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --color-background: var(--falu-red-light);
+        --color-text: var(--dark-grey);
+        --color-link: var(--falu-red);
+        --color-link-hover: var(--falu-red-bright);
+        --color-link-active: var(--falu-red-dark);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background: var(--dark-grey);
+        --color-text: var(--falu-red-light);
+        --color-link: var(--falu-red-dark);
+        --color-link-hover: var(--falu-red-bright);
+        --color-link-active: var(--falu-red);
+    }
+}
+
+/* Global body styles (applied outside CSS Modules) */
+:global(body) {
+    background-color: var(--color-background);
+    transition: all 250ms ease;
+}
+
+/* Container */
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr 2fr auto;
+    grid-template-areas: 
+        "header"
+        "login"
+        "footer";
+    height: 100vh;
+}
+
+/* Header */
+.header {
+    grid-area: header;
+    background-color: var(--color-link);
+    color: var(--falu-red-light);
+    padding: 20px;
+    text-align: center;
+}
+
+.heads img {
+    width: 15em;
+    height: auto;
+    filter: invert(1) sepia(1) saturate(0.5) hue-rotate(305deg);
+    margin: 0 auto;
+}
+
+/* Login section */
+.login {
+    grid-area: login;
+    background-color: var(--color-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logincontent {
+    width: 100%;
+}
+
+/* Form */
+.form {
+    border-style: inset;
+    border-width: 6px;
+    padding: 15px;
+    border-radius: 5%;
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+/* Submit button */
+.subbtn {
+    border-style: groove;
+    background-color: var(--color-link-active);
+    color: var(--falu-red-light);
+    padding: 0.5rem 2rem;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.subbtn:hover {
+    background-color: var(--color-link-hover);
+}
+
+/* Footer */
+.footer {
+    grid-area: footer;
+    background-color: var(--color-link);
+    color: var(--falu-red-light);
+    text-align: center;
+    padding: 1rem;
+}
+
+/* Responsive layout for larger screens */
+@media (min-width: 768px) {
+    .container {
+        grid-template-columns: 40% 1fr;
+        grid-template-rows: auto 30px;
+        grid-template-areas: 
+            "header login"
+            "header footer";
+    }
+
+    .heads {
+        padding-top: 180px;
+    }
+
+    .heads img {
+        width: 25em;
+    }
+}

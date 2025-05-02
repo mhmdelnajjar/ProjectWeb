@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  student
+  instructor
+  admin
+}
+
+model User {
+  id               Int               @id @default(autoincrement())
+  username         String            @unique
+  password         String
+  userType         UserType
+
+  completedCourses CourseRecord[]   @relation("CompletedCourses")
+  currentCourses   CourseRecord[]   @relation("CurrentCourses")
+  pendingCourses   CourseRecord[]   @relation("PendingCourses")
+
+  assignedCourses  CourseAssignment[]
+}
+
+model Course {
+  course_number      String              @id
+  course_name        String              @unique
+  course_instructor  String
+  capacity           Int
+  registeredStudents Int
+  isOpen             Boolean
+  category           String?
+  prerequisite       String
+  image              String?
+
+  // Reverse relations
+  courseRecords      CourseRecord[]
+  courseAssignments  CourseAssignment[]
+}
+
+model CourseRecord {
+  id             Int     @id @default(autoincrement())
+  courseId       String
+  course         Course  @relation(fields: [courseId], references: [course_number])
+  grade          String?
+
+  // Foreign keys for different course states
+  completedById  Int?
+  currentById    Int?
+  pendingById    Int?
+
+  completedBy    User?   @relation("CompletedCourses", fields: [completedById], references: [id])
+  currentBy      User?   @relation("CurrentCourses", fields: [currentById], references: [id])
+  pendingBy      User?   @relation("PendingCourses", fields: [pendingById], references: [id])
+}
+
+model CourseAssignment {
+  id           Int     @id @default(autoincrement())
+  courseId     String
+  course       Course  @relation(fields: [courseId], references: [course_number])
+  instructorId Int
+  instructor   User    @relation(fields: [instructorId], references: [id])
+}
