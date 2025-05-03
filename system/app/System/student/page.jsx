@@ -1,20 +1,29 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import NavStudent from '@/app/components/NavStudent';
-import { useRouter, useSearchParams } from "next/navigation";
-import { getCurrent, getPending, getCompleted } from '@/app/server/server-actions';
+import { useRouter } from "next/navigation";
+import { getCurrent, getPending, getCompleted, getAllCourses } from '@/app/server/server-actions';
 import Link from 'next/link';
 
 export default function Page() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const [curr, setCurr] = useState(null);
-  const [comp, setComp] = useState(null);
-  const [pend, setPend] = useState(null);
+  const [curr, setCurr] = useState([]);
+  const [comp, setComp] = useState([]);
+  const [pend, setPend] = useState([]);
   const [bool, setBool] = useState(false);
   const [courses, setCourses] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // NEW
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  async function coursesGetter() {
+    try {
+      const cc = await getAllCourses();
+      setCourses(cc || []);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      setCourses([]);
+    }
+  }
 
   // Handle session and fetch data
   useEffect(() => {
@@ -27,31 +36,27 @@ export default function Page() {
     if (!email) return;
 
     const fetchAll = async () => {
-      const [currRes, compRes, pendRes] = await Promise.all([
-        getCurrent(email),
-        getCompleted(email),
-        getPending(email)
-      ]);
+      try {
+        setLoading(true);
+        const [currRes, compRes, pendRes] = await Promise.all([
+          getCurrent(email),
+          getCompleted(email),
+          getPending(email)
+        ]);
 
-      setCurr(currRes);
-      setComp(compRes);
-      setPend(pendRes);
+        setCurr(currRes || []);
+        setComp(compRes || []);
+        setPend(pendRes || []);
+        await coursesGetter();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchAll();
   }, [router]);
-
-  // Parse courses from URL once
-  useEffect(() => {
-    const coursesJSON = searchParams.get('courses');
-    if (coursesJSON) {
-      try {
-        setCourses(JSON.parse(coursesJSON));
-      } catch (e) {
-        console.error("Invalid courses JSON", e);
-      }
-    }
-  }, [searchParams]);
 
   function handleDropDown(e) {
     const choice = e.target.value;
@@ -64,30 +69,45 @@ export default function Page() {
     }
   }
 
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-     <NavStudent />
+      <NavStudent />
       <nav className="navcontainer">
         <ul>
-          <li><a id="homenav">HOME</a></li>
-          <li><a id="regnav" href="">REGISTER</a></li>
+          <li><Link href="/System/student" onClick={()=> {
+            setBool(false)
+          }}>HOME</Link></li>
+          <li>
+            <Link 
+              href="/System/student" 
+              onClick={()=> {
+                setBool(true)
+              }}
+            >
+              REGISTER
+            </Link>
+          </li>
           <li className="learning-path-dropdown">
             <div className="menu-head">
               <span>VIEW LEARNING PATH</span>
               <img src="./media/icons/caret-down.svg" alt="" className="dropdown-icon" />
             </div>
             <select onChange={handleDropDown} className="dropdown" id="dropdownR" size="3" aria-label="Learning Path Selection">
-              <option value="completed">Courses Completed</option>
               <option value="progress">Courses In Progress</option>
+              <option value="completed">Courses Completed</option>
               <option value="pending">Pending Courses</option>
             </select>
           </li>
-          <li><Link href="student/aboutus" id="abtus">ABOUT US</Link></li>
+          <li><Link href="student/aboutus">ABOUT US</Link></li>
         </ul>
       </nav>
 
       <div className="container">
-       
         <main className="main">
           <form className="searchForm" onSubmit={(e) => e.preventDefault()}>
             <label htmlFor="searchBar" className="searchLabel">Search for courses: </label>
@@ -109,7 +129,7 @@ export default function Page() {
 
           <div className="cards">
             {courses
-              ?.filter((course) =>
+              .filter((course) =>
                 course.course_name.toLowerCase().includes(searchTerm.toLowerCase())
               )
               .map((course, index) => (
@@ -135,7 +155,16 @@ export default function Page() {
                     </div>
                   </div>
                   <br />
-                  {bool ? <button>Register</button> : null}
+                  {bool && (
+                    <button 
+                
+                      className="btn-register"
+                      onClick={() => {
+                      }}
+                    >
+                      Register
+                    </button>
+                  )}
                 </div>
               ))}
           </div>

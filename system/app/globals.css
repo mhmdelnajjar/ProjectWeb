@@ -48,7 +48,7 @@ body {
   /* Adjust title positioning to accommodate logout button */
   #title {
     display: flex;
-    justify-content: ce;
+    justify-content: center;
     position: relative;
     padding-right: 120px; /* Make space for logout button */
   }
@@ -71,7 +71,7 @@ h1 {
     text-align: center;
     font-size: 1.4em;
     color: var(--falu-red-light);
-    padding: 1em;
+  
 }
 
 #title {
@@ -658,8 +658,7 @@ header{
     }
 
     .cse{
-        margin-left: 75px;
-        text-align: center;
+   align-items: start;
         
     }
     .cseadmin{

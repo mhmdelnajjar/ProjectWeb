@@ -3,7 +3,7 @@ import styles from "@/app/style/page.module.css";
 
 import {useRouter} from "next/navigation";
 
-export default function page({initailUsers,initialCourses}) {
+export default function page({initailUsers}) {
   const router = useRouter()
   async function handleSubmit(e) {
    
@@ -27,7 +27,7 @@ sessionStorage.setItem('sessionId',`${user.userType}#${username}#${password}`)
 switch (user.userType) {
   case "student":
     // 
-    router.push(`/System/student?courses=${encodeURIComponent(JSON.stringify(initialCourses))}`)
+    router.push(`/System/student`)
     break;
   case "instructor":
     router.push("/System/instructor"); // Fixed case sensitivity

@@ -1,15 +1,19 @@
 'use client';
 import React from 'react';
-import { useRouter } from 'next/navigation';
-
+import Link from 'next/link';
+import NavBar from '@/app/components/NavStudent';
 export default function AboutSection() {
-  const router = useRouter();
 
-  const handleReturn = () => {
-    router.back(); // Takes user to the previous page
-  };
 
   return (
+    <>
+    <NavBar/>
+    <nav>
+        <ul>
+          <li><Link href="/System/student">HOME</Link></li>
+
+        </ul>
+      </nav>
     <main>
       <div className="about-container" id="aboutSection">
         <div className="headmessage">
@@ -41,10 +45,9 @@ export default function AboutSection() {
           </div>
         </div>
 
-        <button onClick={handleReturn} className="return-button">
-          ← Return
-        </button>
+        
       </div>
     </main>
+    </>
   );
 }

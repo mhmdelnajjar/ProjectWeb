@@ -5,7 +5,7 @@ import Link from 'next/link'
 export default function NavBar() {
   const router = new useRouter()
   return (
-    <>
+    
  <header className="header">
         <div id="title" className="title">
           <img src="@/media/cse-logo.png" alt="QU CSE" className="logo"/>
@@ -22,6 +22,6 @@ export default function NavBar() {
       </header>
       
 
-    </>
+  
   )
 }

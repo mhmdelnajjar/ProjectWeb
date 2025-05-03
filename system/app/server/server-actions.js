@@ -12,5 +12,9 @@ export async function getCompleted(email) {
 }
 export async function getPending(email) {
     return await systemRepo.getPendingCourses(email)
+}
+export async function getAllCourses() {
+
+return await systemRepo.getCourses()
     
 }
