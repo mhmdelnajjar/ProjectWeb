@@ -8,7 +8,7 @@ export default function Footer() {
             <h2>Keep Updated</h2>
             <ul id="socials">
                 <a href="https://www.instagram.com/qu_ceng/?hl=en">
-                  <img src="" alt="instagram"/>Instagram
+                  <img src="b" alt="instagram"/>Instagram
                 </a>
                 <a href="https://www.facebook.com/p/CSE-at-Qatar-University-100057278927479/">
                   <img src="./media/icons/brand-facebook.svg" alt="facebook"/>Facebook

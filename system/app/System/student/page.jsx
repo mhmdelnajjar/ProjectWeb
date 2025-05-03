@@ -151,7 +151,7 @@ export default function Page() {
 
     return { status: true, text: "Register" };
 }
-  if (loading) {
+if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -239,7 +239,7 @@ export default function Page() {
                           {course.registeredStudents}/{course.capacity} students
                         </p>
                         <span className="cardDate">
-                          {course.prerequisite ? `Prerequisite: ${course.prerequisite.split(":")[0]}` : 'No prerequisites'}
+                          {course.prerequisite ? `Prerequisite: ${course.prerequisite.split(":")[1]}` :""}
                         </span>
                       </div>
                     </div>

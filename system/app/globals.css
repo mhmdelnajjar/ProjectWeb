@@ -48,7 +48,7 @@ body {
   /* Adjust title positioning to accommodate logout button */
   #title {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     position: relative;
     padding-right: 120px; /* Make space for logout button */
   }
@@ -290,7 +290,53 @@ footer h2{
     color: #5e5e5e;
     font-family: 'helvetica-lt';
 }
-
+.courses-list {
+    margin-bottom: 2rem;
+}
+.course-item {
+    background: #f5f5f5;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-view-students {
+    padding: 0.5rem 1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.students-table {
+    margin-top: 2rem;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #f2f2f2;
+}
+.grade-select {
+    padding: 8px;
+    margin-right: 10px;
+}
+.btn-submit-grade {
+    padding: 8px 12px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 #btnreg {
     background-color: #800020;
     color: #fff;
@@ -657,10 +703,7 @@ header{
             ;
     }
 
-    .cse{
-   align-items: start;
-        
-    }
+  
     .cseadmin{
         display: none;
     }

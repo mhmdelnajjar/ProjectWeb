@@ -20,4 +20,12 @@ return await systemRepo.getCourses()
 }
 export async function updatePending(email,courseNum) {
 return await systemRepo.updatePending(email,courseNum)
+
+
+}
+
+export async function getAssingendCourses(instId) {
+    return await systemRepo.getAssigned(instId)
+
+
 }

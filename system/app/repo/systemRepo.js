@@ -54,55 +54,77 @@ async getPendingCourses(email) {
   return user?.pendingCourses.map(record => record.course) || [];
 }
 async updatePending(email, courseNumber) {
+
   try {
-    // 1. Find the user
+
     const user = await prisma.user.findUnique({
+
       where: { username: email },
-      include: {
-        pendingCourses: {
-          include: {
-            course: true
-          }
+
+    });
+ 
+    if (!user) throw new Error("User not found: " + email);
+ 
+    const course = await prisma.course.findUnique({
+
+      where: { course_number: courseNumber }
+
+    });
+ 
+    if (!course) throw new Error("Course not found: " + courseNumber);
+ 
+    const already = await prisma.courseRecord.findFirst({
+
+      where: {
+
+        courseId: course.course_number,
+
+        pendingById: user.id
+
+      }
+
+    });
+ 
+    if (already) return true; // already pending
+ 
+    await prisma.courseRecord.create({
+
+      data: {
+
+        courseId: course.course_number,
+
+        pendingById: user.id
+
+      }
+
+    });
+ 
+    return true;
+
+  } catch (error) {
+
+    console.error("❌ updatePending error:", error);
+
+    throw error;
+
+  }
+
+}
+
+ 
+async getAssigned(instId) {
+  const user = await prisma.user.findUnique({
+    where: { username: instId },
+    include: {
+      assignedCourses: {
+        include: {
+          course: true
         }
       }
-    });
-
-    if (!user) {
-      throw new Error("User not found");
     }
+  });
 
-    // 2. Check if course is already pending
-    const alreadyPending = user.pendingCourses.some(
-      pc => pc.course.course_number === courseNumber
-    );
-    
-    if (alreadyPending) {
-      return true; // Already pending
-    }
-
-    // 3. Find the course
-    const course = await prisma.course.findUnique({
-      where: { course_number: courseNumber }
-    });
-
-    if (!course) {
-      throw new Error("Course not found");
-    }
-
-    // 4. Create pending course record
-    await prisma.pendingCourse.create({
-      data: {
-        userId: user.id,
-        courseId: course.course_number,
-        status: 'PENDING'
-      }
-    });
-
-    return true;
-  } catch (error) {
-    console.error("Error in updatePending:", error);
-    throw error;
-  }
+  return user?.currentCourses.map(record => record.course) || [];
 }
 }
 
