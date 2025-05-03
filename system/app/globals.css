@@ -708,3 +708,51 @@ header{
 .btn-toggle-approve:hover {
     opacity: 0.8;
 }
+
+
+/* about us */
+
+.card2 {
+    background: var(--color-card);
+    min-height: 14em;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 7px var(--color-shadow);
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+
+  }
+  .card2 img {
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    border-radius: 50px;
+    
+    
+  }
+   
+  .card2:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .instructors-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 1.15em;
+    margin: 5px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+  .return-button {
+    margin-top: 20px;
+    padding: 10px 16px;
+    background-color: #520b0b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
