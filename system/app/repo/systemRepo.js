@@ -53,6 +53,57 @@ async getPendingCourses(email) {
 
   return user?.pendingCourses.map(record => record.course) || [];
 }
+async updatePending(email, courseNumber) {
+  try {
+    // 1. Find the user
+    const user = await prisma.user.findUnique({
+      where: { username: email },
+      include: {
+        pendingCourses: {
+          include: {
+            course: true
+          }
+        }
+      }
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // 2. Check if course is already pending
+    const alreadyPending = user.pendingCourses.some(
+      pc => pc.course.course_number === courseNumber
+    );
+    
+    if (alreadyPending) {
+      return true; // Already pending
+    }
+
+    // 3. Find the course
+    const course = await prisma.course.findUnique({
+      where: { course_number: courseNumber }
+    });
+
+    if (!course) {
+      throw new Error("Course not found");
+    }
+
+    // 4. Create pending course record
+    await prisma.pendingCourse.create({
+      data: {
+        userId: user.id,
+        courseId: course.course_number,
+        status: 'PENDING'
+      }
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error in updatePending:", error);
+    throw error;
+  }
+}
 }
 
 

@@ -18,3 +18,6 @@ export async function getAllCourses() {
 return await systemRepo.getCourses()
     
 }
+export async function updatePending(email,courseNum) {
+return await systemRepo.updatePending(email,courseNum)
+}
