@@ -3,15 +3,15 @@ import Footer from '@/app/components/Footer';
 import NavBarInst from '@/app/components/NavBarInst';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAssingendCourses } from '@/app/server/server-actions';
+import { getAssingendCourses, submitGrade } from '@/app/server/server-actions';
 
 export default function InstructorPortal() {
   const router = useRouter();
   const [assignedCourses, setAssignedCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [gradeInputs, setGradeInputs] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +19,6 @@ export default function InstructorPortal() {
         setLoading(true);
         setError(null);
         
-        // Check session
         if (typeof window === 'undefined' || !sessionStorage.getItem("sessionId")) {
           router.push("/");
           return;
@@ -31,23 +30,11 @@ export default function InstructorPortal() {
           return;
         }
 
-        // Fetch courses and verify response
-        const response = await getAssingendCourses(email);
-        console.log('API Response:', response); // Debug log
-        
-        if (!response) {
-          throw new Error("No response from server");
-        }
-
-        // Ensure response is an array
-        const coursesArray = Array.isArray(response) ? response : [];
-        setAssignedCourses(coursesArray);
-
+        const courses = await getAssingendCourses(email);
+        setAssignedCourses(courses);
+        setLoading(false);
       } catch (err) {
-        console.error("Fetch error:", err);
-        setError(err.message || "Failed to load courses");
-        setAssignedCourses([]);
-      } finally {
+        setError(err.message);
         setLoading(false);
       }
     };
@@ -57,39 +44,48 @@ export default function InstructorPortal() {
 
   const handleViewStudents = (course) => {
     setSelectedCourse(course);
-    // Temporary mock data - replace with actual API call
-    setStudents([
-      { id: 1, name: 'Student One', grade: 'A' },
-      { id: 2, name: 'Student Two', grade: 'B' }
-    ]);
+    // Initialize grade inputs
+    const inputs = {};
+    course.students.forEach(student => {
+      inputs[student.id] = student.grade === 'N/A' ? '' : student.grade;
+    });
+    setGradeInputs(inputs);
   };
 
-  // Render loading state
-  if (loading) {
-    return (
-      <div className="text-center p-8">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-        <p className="mt-4">Loading courses...</p>
-      </div>
-    );
-  }
+  const handleGradeChange = (studentId, value) => {
+    setGradeInputs(prev => ({
+      ...prev,
+      [studentId]: value
+    }));
+  };
 
-  // Render error state
-  if (error) {
-    return (
-      <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-        <p>Error: {error}</p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  const handleSubmitGrades = async () => {
+    if (!selectedCourse) return;
+    
+    try {
+      const updates = Object.entries(gradeInputs)
+        .filter(([_, grade]) => grade.trim() !== '')
+        .map(([studentId, grade]) => 
+          submitGrade(studentId, selectedCourse.course_number, grade)
+        );
 
-  // Main render
+      await Promise.all(updates);
+      alert('Grades submitted successfully!');
+      
+      // Refresh the data
+      const email = sessionStorage.getItem("sessionId")?.split("#")[1];
+      const courses = await getAssingendCourses(email);
+      setAssignedCourses(courses);
+      const updatedCourse = courses.find(c => c.course_number === selectedCourse.course_number);
+      if (updatedCourse) setSelectedCourse(updatedCourse);
+    } catch (error) {
+      alert('Error submitting grades: ' + error.message);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="min-h-screen flex flex-col">
       <NavBarInst />
@@ -108,6 +104,7 @@ export default function InstructorPortal() {
                     <div>
                       <h3 className="font-medium">{course.course_name}</h3>
                       <p className="text-sm text-gray-600">{course.course_number}</p>
+                      <p className="text-sm text-gray-600">{course.students.length} students</p>
                     </div>
                     <button 
                       onClick={() => handleViewStudents(course)}
@@ -131,26 +128,42 @@ export default function InstructorPortal() {
             <h2 className="text-xl font-semibold mb-4">
               Students in {selectedCourse.course_name}
             </h2>
-            {students.length > 0 ? (
+            {selectedCourse.students.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border">
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Grade</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Update Grade</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {students.map((student) => (
+                    {selectedCourse.students.map((student) => (
                       <tr key={student.id}>
                         <td className="px-6 py-4 whitespace-nowrap">{student.id}</td>
                         <td className="px-6 py-4 whitespace-nowrap">{student.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap">{student.grade}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <input
+                            type="text"
+                            value={gradeInputs[student.id] || ''}
+                            onChange={(e) => handleGradeChange(student.id, e.target.value)}
+                            className="border rounded px-2 py-1 w-20"
+                            placeholder="Enter grade"
+                          />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+                <button
+                  onClick={handleSubmitGrades}
+                  className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                >
+                  Submit Grades
+                </button>
               </div>
             ) : (
               <p className="text-gray-500">No students enrolled in this course</p>
