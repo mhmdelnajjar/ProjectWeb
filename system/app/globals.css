@@ -797,4 +797,41 @@ header{
     border-radius: 6px;
     cursor: pointer;
   }
-  
+  .stats-container {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.stats-section {
+  margin: 20px 0;
+  padding: 25px;
+  border-radius: 10px;
+  background: var(--color-card);
+  box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+.stats-section h2 {
+  margin-bottom: 1rem;
+}
+
+.return-button {
+  background-color: var(--falu-red);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.return-button:hover {
+  background-color: var(--falu-red-bright);
+}
+
+.return-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
