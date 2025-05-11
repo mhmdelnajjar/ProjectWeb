@@ -1,12 +1,14 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-export function signJwt(user, expiresIn = "1d") {
-  return jwt.sign(user, process.env.JWT_SECRET_KEY, { expiresIn });
+const SECRET = process.env.JWT_SECRET_KEY || "dn3r43ir439r349r"
+
+export function signJwt(user) {
+  return jwt.sign(user, SECRET, { expiresIn: '1h' });
 }
 
 export function verifyJwt(token) {
   try {
-    return jwt.verify(token, process.env.JWT_SECRET_KEY);
+    return jwt.verify(token, SECRET);
   } catch {
     return null;
   }

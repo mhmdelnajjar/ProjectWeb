@@ -1,55 +1,40 @@
 'use client'
 import styles from "@/app/style/page.module.css";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-import {useRouter} from "next/navigation";
+export default function Page() {
+  const router = useRouter();
+  const [error, setError] = useState('');
 
-export default function page({initailUsers}) {
-  const router = useRouter()
   async function handleSubmit(e) {
-   
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    const username = data.username
 
-    
-    const password = data.password
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      });
 
+      if (!res.ok) {
+        const err = await res.json();
+        setError(err.error || "Login failed");
+        return;
+      }
 
-  
-  const user =  initailUsers.find(a=>a.username==username)
-if (user) {
-if (user.password == password){
+      const { userType } = await res.json(); // optional
+      if (userType === 'student') router.push('/System/student');
+      else if (userType === 'instructor') router.push('/System/instructor');
+      else if (userType === 'admin') router.push('/System/admin');
 
-sessionStorage.setItem('sessionId',`${user.userType}#${username}#${password}`)
-
-
-switch (user.userType) {
-  case "student":
-    // 
-    router.push(`/System/student`)
-    break;
-  case "instructor":
-    router.push("/System/instructor"); // Fixed case sensitivity
-    break;
-  case "admin":
-    router.push("/System/admin");
-    break;
-  default:
-    console.error("Unknown user type");
-}
-
-} else {
-  document.querySelector("#loginError").innerHTML= "password is incorrect"
-
-}
-
-  
-
-  }  else {
-    document.querySelector("#loginError").innerHTML= "account not found"
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    }
   }
-}
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -69,7 +54,6 @@ switch (user.userType) {
           <input
             type="text"
             placeholder="Email"
-            id="username"
             name="username"
             required
           />
@@ -77,7 +61,6 @@ switch (user.userType) {
           <input
             type="password"
             placeholder="Password"
-            id="password"
             name="password"
             required
           />
@@ -85,9 +68,11 @@ switch (user.userType) {
           <button type="submit" className={styles.subbtn}>
             Login
           </button>
-          <div id="loginError">
-
-          </div>
+          {error && (
+            <div id="loginError" style={{ color: 'red', marginTop: '10px' }}>
+              {error}
+            </div>
+          )}
         </form>
       </div>
 
