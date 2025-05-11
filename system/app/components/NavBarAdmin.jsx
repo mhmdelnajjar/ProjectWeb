@@ -24,7 +24,11 @@ export default function NavBarAdmin() {
           <Link href="/create-course" className="hover:underline flex items-center gap-1">
             <i className="fas fa-plus-circle"></i> Create Course
           </Link>
+          <Link href={`/System/status`} className="hover:underline flex items-center gap-1">
+            <i className="fas fa-plus-circle"></i> Show Statistics
+          </Link>
           <button 
+          
             onClick={handleLogout}
             className="hover:underline flex items-center gap-1"
           >
