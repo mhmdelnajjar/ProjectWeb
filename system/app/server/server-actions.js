@@ -1,16 +1,11 @@
 'use server'
 import systemRepo from "../repo/systemRepo";
-import { verifyJwt } from '@/app/lib/jwt';
-import { cookies } from 'next/headers';
+
+
 // Base methods
 
 export async function getUsers() {
-  const token = cookies().get('id_token')?.value;
-  const user = verifyJwt(token);
 
-  if (!user || user.userType !== 'admin') {
-    throw new Error('Unauthorized');
-  }
 
   return await systemRepo.getUsers()
 }
