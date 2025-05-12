@@ -86,6 +86,91 @@ h2 {
     text-align: center;
     color: var(--color-text);
 }
+/* ===== Admin Navbar Styles ===== */
+.navbar-admin {
+  background-color: var(--color-link);
+  color: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-logo {
+  height: 40px;
+  width: auto;
+  filter: invert(1) sepia(1) saturate(0.5) hue-rotate(305deg);
+}
+
+.navbar-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+  text-decoration: underline;
+  color: var(--falu-red-200);
+}
+
+.navbar-link i {
+  font-size: 1rem;
+}
+
+/* Responsive behavior */
+@media screen and (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .navbar-brand {
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .navbar-link {
+    font-size: 1rem;
+  }
+}
+
 
 nav ul {
     display: flex;

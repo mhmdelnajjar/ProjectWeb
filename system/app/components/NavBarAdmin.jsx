@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -11,26 +11,25 @@ export default function NavBarAdmin() {
   };
 
   return (
-    <header className="bg-blue-800 text-white">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <img src="/cse-logo.png" alt="QU CSE" className="h-10" />
-          <h1 className="text-xl font-bold">CSE Admin Dashboard</h1>
+    <header className="navbar-admin">
+      <div className="navbar-container">
+        <div className="navbar-brand">
+          <img src="/media/cse-logo.png" alt="QU CSE" className="navbar-logo" />
+          <h1 className="navbar-title">CSE Admin Dashboard</h1>
         </div>
-        <nav className="flex items-center space-x-6">
-          <Link href="/admin" className="hover:underline flex items-center gap-1">
+        <nav className="navbar-nav">
+          <Link href="/System/admin" className="navbar-link">
             <i className="fas fa-home"></i> Dashboard
           </Link>
-          <Link href="/create-course" className="hover:underline flex items-center gap-1">
+          <Link href="/System/create-course" className="navbar-link">
             <i className="fas fa-plus-circle"></i> Create Course
           </Link>
-          <Link href={`/System/status`} className="hover:underline flex items-center gap-1">
-            <i className="fas fa-plus-circle"></i> Show Statistics
+          <Link href="/System/status" className="navbar-link">
+            <i className="fas fa-chart-bar"></i> Show Statistics
           </Link>
           <button 
-          
             onClick={handleLogout}
-            className="hover:underline flex items-center gap-1"
+            className="logout-button" 
           >
             <i className="fas fa-sign-out-alt"></i> Logout
           </button>

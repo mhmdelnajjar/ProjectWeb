@@ -20,9 +20,6 @@ export default function Page({ initailUsers}) {
       return;
     }
 
-    // Check if initialUsers is available
-
-    // Find matching user
    const user = initailUsers.find(u => {
  // Log the username
   return u.username === username && u.password === password;
