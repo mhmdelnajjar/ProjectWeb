@@ -3,35 +3,52 @@ import styles from "@/app/style/page.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function Page() {
+export default function Page({ initailUsers}) {
   const router = useRouter();
   const [error, setError] = useState('');
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
+    setError('');
+    
     const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
+    const { username, password } = Object.fromEntries(formData);
 
-    try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
-      });
+    // Validate inputs
+    if (!username || !password) {
+      setError("Please enter both username and password");
+      return;
+    }
 
-      if (!res.ok) {
-        const err = await res.json();
-        setError(err.error || "Login failed");
-        return;
-      }
+    // Check if initialUsers is available
 
-      const { userType } = await res.json(); // optional
-      if (userType === 'student') router.push('/System/student');
-      else if (userType === 'instructor') router.push('/System/instructor');
-      else if (userType === 'admin') router.push('/System/admin');
+    // Find matching user
+   const user = initailUsers.find(u => {
+ // Log the username
+  return u.username === username && u.password === password;
+});
 
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
+
+    if (!user) {
+      setError("Invalid username or password");
+      return;
+    }
+      sessionStorage.setItem('sessionId', `${user.userType}#${username}#${password}`);
+
+
+    // Redirect based on userType
+    switch(user.userType) {
+      case 'student':
+        router.push('/System/student');
+        break;
+      case 'instructor':
+        router.push('/System/instructor');
+        break;
+      case 'admin':
+        router.push('/System/admin');
+        break;
+      default:
+        setError("Unknown user type");
     }
   }
 
@@ -53,7 +70,7 @@ export default function Page() {
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             type="text"
-            placeholder="Email"
+            placeholder="Username (QU email)"
             name="username"
             required
           />
@@ -69,7 +86,7 @@ export default function Page() {
             Login
           </button>
           {error && (
-            <div id="loginError" style={{ color: 'red', marginTop: '10px' }}>
+            <div className={styles.error}>
               {error}
             </div>
           )}
