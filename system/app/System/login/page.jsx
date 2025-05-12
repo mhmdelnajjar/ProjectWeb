@@ -57,11 +57,8 @@ export default function Page() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.heads}>
-          <img 
-            src="/media/qu-logo-small.png" 
-            alt="QU CSE" 
-            className={styles.img} 
-          />
+                    <img src="https://media-hosting.imagekit.io/a086cbbc74ab43c8/qu-logo-small.png?Expires=1841677972&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=Gi5xdMBev1avYk7RXcCH1IUxJBtA1rjPYtAe7PXwVTkYgNWHCKMUn9wQ~A8e04-J4Ln5PbAkpwj~2TMzqkCIzlKG0XQtjk7OP5IOWXnk3T9gcH719uDn762juKiFQjfwzdXrnSt-wdP31e9gLyq~VFWecfMkaVoka2FzmFQrmJZk-z~5YEngLp43tAojpmVGojs2lABB9K72rxkJXe3YurgdlDevjXzryIw6jIIeyH~4CwFlh6V7XjgQzOlNUCecgoIodVO3VNEhJQKv8tXHYl9ayGITaC6IU-~jiv9zwCvwkpW9TeX9hI~tC0Ag126OJXf5Wa07WrvxwKONBhIJsg__" alt="QU CSE" className="navbar-logo" />
+
           <h1>CSE Registration</h1>
           <h3>Register now for the CSE department at QU and kickstart your tech journey!</h3>
         </div>

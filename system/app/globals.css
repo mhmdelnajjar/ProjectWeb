@@ -123,6 +123,7 @@ h2 {
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   letter-spacing: 1px;
+  
 }
  
 .logout-button {
@@ -412,7 +413,8 @@ footer h2{
   .cards{
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-    gap: 0.15em;
+    gap: 0.50em;
+    
   }
  
 .title-head {
@@ -564,6 +566,7 @@ header{
     grid-area: header;
   } .nav{
     grid-area: nav;
+    
   }
   .main{
     grid-area: main;
@@ -609,6 +612,7 @@ header{
     justify-content: space-between;
     max-width: 1200px;
     margin: 0 auto;
+    
 }
  
 .logo {

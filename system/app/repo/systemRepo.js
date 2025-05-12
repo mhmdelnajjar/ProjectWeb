@@ -206,232 +206,295 @@ class SystemRepo {
 
   // 10 STATISTICS METHODS HERE
 
-async getTotalStudentsPerCourse() {
-  const records = await prisma.courseRecord.findMany({
-    where: {
-      OR: [
-        { currentById: { not: null } },
-        { completedById: { not: null } }
-      ]
-    },
-    include: { course: true }
-  });
+  async getTotalStudentsPerCourse() {
+    const records = await prisma.courseRecord.groupBy({
+      by: ['courseId'],
+      where: {
+        OR: [
+          { currentById: { not: null } },
+          { completedById: { not: null } }
+        ]
+      },
+      _count: {
+        courseId: true
+      }
+    });
 
-  const map = {};
-  for (const rec of records) {
-    const course = rec.course;
-    if (!map[course.course_number]) {
-      map[course.course_number] = {
+    const courses = await prisma.course.findMany({
+      where: {
+        course_number: {
+          in: records.map(r => r.courseId)
+        }
+      }
+    });
+
+    return records.map(record => {
+      const course = courses.find(c => c.course_number === record.courseId);
+      return {
+        course_number: record.courseId,
         course_name: course.course_name,
-        total_students: 0
+        total_students: record._count.courseId
       };
-    }
-    map[course.course_number].total_students += 1;
+    });
   }
 
-  return Object.entries(map).map(([course_number, data]) => ({
-    course_number,
-    ...data
-  }));
-}
+  async getTotalStudentsPerCategory() {
+    const records = await prisma.courseRecord.findMany({
+      where: {
+        OR: [
+          { currentById: { not: null } },
+          { completedById: { not: null } }
+        ]
+      },
+      include: {
+        course: {
+          select: {
+            category: true
+          }
+        }
+      }
+    });
 
+    const categoryCounts = records.reduce((acc, record) => {
+      const category = record.course.category;
+      acc[category] = (acc[category] || 0) + 1;
+      return acc;
+    }, {});
 
-async getTotalStudentsPerCategory() {
-  const records = await prisma.courseRecord.findMany({
-    where: {
-      OR: [
-        { currentById: { not: null } },
-        { completedById: { not: null } }
-      ]
-    },
-    include: { course: true }
-  });
-
-  const map = {};
-  for (const rec of records) {
-    const category = rec.course.category;
-    if (!map[category]) map[category] = 0;
-    map[category] += 1;
-  }
-  return map;
-}
-
-
-async getPassedStudentsPerCourse() {
-  const records = await prisma.courseRecord.findMany({
-    where: {
-      grade: { in: ["A", "B", "C"] }
-    },
-    include: { course: true }
-  });
-
-  const map = {};
-  for (const rec of records) {
-    const c = rec.course;
-    if (!map[c.course_number]) {
-      map[c.course_number] = { course_name: c.course_name, count: 0 };
-    }
-    map[c.course_number].count++;
-  }
-  return map;
-}
-
-
-async getFailureRatePerCourse() {
-  const records = await prisma.courseRecord.findMany({
-    where: { grade: { not: null } },
-    include: { course: true }
-  });
-
-  const stats = {};
-  for (const rec of records) {
-    const course = rec.course;
-    const cid = course.course_number;
-    if (!stats[cid]) {
-      stats[cid] = { course_name: course.course_name, total: 0, fail: 0 };
-    }
-    stats[cid].total++;
-    if (rec.grade === "F") stats[cid].fail++;
+    return categoryCounts;
   }
 
-  return Object.entries(stats).map(([course_number, d]) => ({
-    course_number,
-    course_name: d.course_name,
-    failure_rate: (d.fail / d.total) * 100
-  }));
-}
+  async getPassedStudentsPerCourse() {
+    const records = await prisma.courseRecord.groupBy({
+      by: ['courseId'],
+      where: {
+        grade: { in: ["A", "B", "C"] }
+      },
+      _count: {
+        courseId: true
+      }
+    });
 
+    const courses = await prisma.course.findMany({
+      where: {
+        course_number: {
+          in: records.map(r => r.courseId)
+        }
+      }
+    });
 
-async getTop3CoursesByEnrollment() {
-  const records = await prisma.courseRecord.findMany({
-    where: {
-      OR: [
-        { currentById: { not: null } },
-        { completedById: { not: null } }
-      ]
-    },
-    include: { course: true }
-  });
-
-  const map = {};
-  for (const rec of records) {
-    const c = rec.course;
-    if (!map[c.course_number]) {
-      map[c.course_number] = { course_name: c.course_name, count: 0 };
-    }
-    map[c.course_number].count++;
-  }
-
-  return Object.entries(map)
-    .map(([course_number, data]) => ({ course_number, ...data }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 3);
-}
-
-
-async getAverageGradePerCourse() {
-  const gradeMap = { A: 4, B: 3, C: 2, D: 1, F: 0 };
-  const records = await prisma.courseRecord.findMany({
-    where: { grade: { not: null } },
-    include: { course: true }
-  });
-
-  const stats = {};
-  for (const rec of records) {
-    const course = rec.course;
-    const g = gradeMap[rec.grade];
-    const cid = course.course_number;
-    if (!stats[cid]) {
-      stats[cid] = { course_name: course.course_name, sum: 0, count: 0 };
-    }
-    stats[cid].sum += g;
-    stats[cid].count++;
-  }
-
-  return Object.entries(stats).map(([course_number, d]) => ({
-    course_number,
-    course_name: d.course_name,
-    avg_grade: (d.sum / d.count).toFixed(2)
-  }));
-}
-
-
-async getOpenVsClosedCoursesCount() {
-  const [open, closed] = await Promise.all([
-    prisma.course.count({ where: { isOpen: true } }),
-    prisma.course.count({ where: { isOpen: false } })
-  ]);
-  return { open, closed };
-}
-
-
-async getPendingEnrollmentsPerCourse() {
-  const records = await prisma.courseRecord.findMany({
-    where: { pendingById: { not: null } },
-    include: { course: true }
-  });
-
-  const map = {};
-  for (const rec of records) {
-    const course = rec.course;
-    if (!map[course.course_number]) {
-      map[course.course_number] = {
+    return records.reduce((acc, record) => {
+      const course = courses.find(c => c.course_number === record.courseId);
+      acc[record.courseId] = {
         course_name: course.course_name,
-        count: 0
+        count: record._count.courseId
       };
-    }
-    map[course.course_number].count++;
+      return acc;
+    }, {});
   }
 
-  return map;
-}
+  async getFailureRatePerCourse() {
+    const records = await prisma.courseRecord.findMany({
+      where: {
+        grade: { not: null }
+      },
+      include: {
+        course: true
+      }
+    });
 
+    const stats = {};
+    for (const record of records) {
+      const courseId = record.courseId;
+      if (!stats[courseId]) {
+        stats[courseId] = {
+          course_name: record.course.course_name,
+          total: 0,
+          fail: 0
+        };
+      }
+      stats[courseId].total++;
+      if (record.grade === "F") stats[courseId].fail++;
+    }
 
-async getMostFailedCourse() {
-  const records = await prisma.courseRecord.findMany({
-    where: { grade: "F" },
-    include: { course: true }
-  });
+    return Object.entries(stats).map(([courseId, data]) => ({
+      course_number: courseId,
+      course_name: data.course_name,
+      failure_rate: (data.fail / data.total) * 100
+    }));
+  }
 
-  const map = {};
-  for (const rec of records) {
-    const course = rec.course;
-    if (!map[course.course_number]) {
-      map[course.course_number] = {
+  async getTop3CoursesByEnrollment() {
+    const records = await prisma.courseRecord.groupBy({
+      by: ['courseId'],
+      where: {
+        OR: [
+          { currentById: { not: null } },
+          { completedById: { not: null } }
+        ]
+      },
+      _count: {
+        courseId: true
+      },
+      orderBy: {
+        _count: {
+          courseId: 'desc'
+        }
+      },
+      take: 3
+    });
+
+    const courses = await prisma.course.findMany({
+      where: {
+        course_number: {
+          in: records.map(r => r.courseId)
+        }
+      }
+    });
+
+    return records.map(record => {
+      const course = courses.find(c => c.course_number === record.courseId);
+      return {
+        course_number: record.courseId,
         course_name: course.course_name,
-        count: 0
+        count: record._count.courseId
       };
+    });
+  }
+
+  async getAverageGradePerCourse() {
+    const records = await prisma.courseRecord.findMany({
+      where: {
+        grade: { not: null }
+      },
+      include: {
+        course: true
+      }
+    });
+
+    const gradeMap = { A: 4, B: 3, C: 2, D: 1, F: 0 };
+    const stats = {};
+
+    for (const record of records) {
+      const courseId = record.courseId;
+      if (!stats[courseId]) {
+        stats[courseId] = {
+          course_name: record.course.course_name,
+          sum: 0,
+          count: 0
+        };
+      }
+      stats[courseId].sum += gradeMap[record.grade];
+      stats[courseId].count++;
     }
-    map[course.course_number].count++;
+
+    return Object.entries(stats).map(([courseId, data]) => ({
+      course_number: courseId,
+      course_name: data.course_name,
+      avg_grade: (data.sum / data.count).toFixed(2)
+    }));
   }
 
-  const sorted = Object.entries(map).sort(([, a], [, b]) => b.count - a.count);
-  const [cid, data] = sorted[0] || [null, null];
-  return { course_number: cid, ...data };
-}
-
-
-async getStudentCountPerInstructor() {
-  const records = await prisma.courseRecord.findMany({
-    where: {
-      OR: [
-        { currentById: { not: null } },
-        { completedById: { not: null } }
-      ]
-    },
-    include: { course: true }
-  });
-
-  const map = {};
-  for (const rec of records) {
-    const instructor = rec.course.course_instructor;
-    if (!map[instructor]) map[instructor] = 0;
-    map[instructor]++;
+  async getOpenVsClosedCoursesCount() {
+    const [open, closed] = await Promise.all([
+      prisma.course.count({ where: { isOpen: true } }),
+      prisma.course.count({ where: { isOpen: false } })
+    ]);
+    return { open, closed };
   }
-  return map;
-}
 
-  async createCourse(courseData) {
+  async getPendingEnrollmentsPerCourse() {
+    const records = await prisma.courseRecord.groupBy({
+      by: ['courseId'],
+      where: {
+        pendingById: { not: null }
+      },
+      _count: {
+        courseId: true
+      }
+    });
+
+    const courses = await prisma.course.findMany({
+      where: {
+        course_number: {
+          in: records.map(r => r.courseId)
+        }
+      }
+    });
+
+    return records.reduce((acc, record) => {
+      const course = courses.find(c => c.course_number === record.courseId);
+      acc[record.courseId] = {
+        course_name: course.course_name,
+        count: record._count.courseId
+      };
+      return acc;
+    }, {});
+  }
+
+  async getMostFailedCourse() {
+    const records = await prisma.courseRecord.findMany({
+      where: {
+        grade: "F"
+      },
+      include: {
+        course: true
+      }
+    });
+
+    const failCounts = {};
+    for (const record of records) {
+      const courseId = record.courseId;
+      if (!failCounts[courseId]) {
+        failCounts[courseId] = {
+          course_name: record.course.course_name,
+          count: 0
+        };
+      }
+      failCounts[courseId].count++;
+    }
+
+    const sorted = Object.entries(failCounts)
+      .sort(([, a], [, b]) => b.count - a.count);
+    
+    if (sorted.length === 0) {
+      return { course_number: null, course_name: null, count: 0 };
+    }
+
+    const [courseId, data] = sorted[0];
+    return {
+      course_number: courseId,
+      course_name: data.course_name,
+      count: data.count
+    };
+  }
+
+  async getStudentCountPerInstructor() {
+    const records = await prisma.courseRecord.findMany({
+      where: {
+        OR: [
+          { currentById: { not: null } },
+          { completedById: { not: null } }
+        ]
+      },
+      include: {
+        course: {
+          select: {
+            course_instructor: true
+          }
+        }
+      }
+    });
+
+    const instructorCounts = {};
+    for (const record of records) {
+      const instructor = record.course.course_instructor;
+      instructorCounts[instructor] = (instructorCounts[instructor] || 0) + 1;
+    }
+
+    return instructorCounts;
+  }
+    async createCourse(courseData) {
     try {
       const course = await prisma.course.create({
         data: {
