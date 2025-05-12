@@ -3,7 +3,9 @@ import Footer from '@/app/components/Footer';
 import NavBarInst from '@/app/components/NavBarInst';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAssingendCourses, submitGrade } from '@/app/server/server-actions';
+import { getAssingendCourses, submitGrade, getPendingRequests } from '@/app/server/server-actions';
+import Cookies from 'js-cookie';
+import Link from 'next/link';
 
 export default function InstructorPortal() {
   const router = useRouter();
@@ -12,34 +14,41 @@ export default function InstructorPortal() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [gradeInputs, setGradeInputs] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const checkAuth = async () => {
+      const token = Cookies.get('token');
+      const userInfo = localStorage.getItem("user");
+
+      if (!token || !userInfo) {
+        router.push('/');
+        return;
+      }
+
+      const userType = userInfo.split("#")[0];
+      if (userType !== 'instructor') {
+        router.push('/');
+        return;
+      }
+
+      setIsAuthenticated(true);
       try {
         setLoading(true);
-        setError(null);
-        
-        if (typeof window === 'undefined' || !sessionStorage.getItem("sessionId")) {
-          router.push("/");
-          return;
-        }
-
-        const email = sessionStorage.getItem("sessionId")?.split("#")[1];
-        if (!email) {
-          router.push("/");
-          return;
-        }
-
-        const courses = await getAssingendCourses(email);
-        setAssignedCourses(courses);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
+        const [coursesRes, requestsRes] = await Promise.all([
+          getAssingendCourses(),
+          getPendingRequests()
+        ]);
+        setAssignedCourses(coursesRes || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    checkAuth();
   }, [router]);
 
   const handleViewStudents = (course) => {
@@ -73,7 +82,7 @@ export default function InstructorPortal() {
       alert('Grades submitted successfully!');
       
       // Refresh the data
-      const email = sessionStorage.getItem("sessionId")?.split("#")[1];
+      const email = localStorage.getItem("user")?.split("#")[1];
       const courses = await getAssingendCourses(email);
       setAssignedCourses(courses);
       const updatedCourse = courses.find(c => c.course_number === selectedCourse.course_number);
@@ -83,8 +92,22 @@ export default function InstructorPortal() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-4">Loading...</h2>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, don't render anything (will be redirected by middleware)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

@@ -12,12 +12,19 @@ import {
   getOpenVsClosedCoursesCount,
   getPendingEnrollmentsPerCourse,
   getMostFailedCourse,
-  getStudentCountPerInstructor
+  getStudentCountPerInstructor,
+  getPendingRequests
 } from '@/app/server/server-actions';
+import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
 
 export default function StatisticsPage() {
+  const router = useRouter();
   const [index, setIndex] = useState(0);
   const [data, setData] = useState(Array(10).fill(null));
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const fetchStats = async () => {
     const results = await Promise.all([
@@ -34,6 +41,38 @@ export default function StatisticsPage() {
     ]);
     setData(results);
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      // Check both localStorage and JWT token
+      const token = Cookies.get('token');
+      const userInfo = localStorage.getItem("user");
+
+      if (!token || !userInfo) {
+        router.push('/System/login');
+        return;
+      }
+
+      setIsAuthenticated(true);
+      const email = userInfo.split("#")[1];
+      if (!email) {
+        router.push('/System/login');
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const requestsRes = await getPendingRequests(email);
+        setRequests(requestsRes || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   useEffect(() => {
     fetchStats();
@@ -70,6 +109,23 @@ export default function StatisticsPage() {
       default: return null;
     }
   };
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-4">Loading...</h2>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, don't render anything (will be redirected by middleware)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <>

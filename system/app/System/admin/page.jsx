@@ -1,56 +1,69 @@
 'use client'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
-  getCourses, 
+  getAllCourses, 
   getPendingRequests, 
   handleRequest, 
   toggleCourseApproval,
   deleteCourse,
   bulkUpdateCourses,
-  bulkHandleRequests
+  bulkHandleRequests,
+  getUsers,
+  updateCourse
 } from "@/app/server/server-actions"
 import NavBarAdmin from '@/app/components/NavBarAdmin';
 import Footer from '@/app/components/Footer';
+import Cookies from 'js-cookie';
+import Link from 'next/link';
 
 export default function AdminDashboard() {
   const router = useRouter();
   const [courses, setCourses] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [bool, setBool] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const checkAuth = async () => {
+      // Check both localStorage and JWT token
+      const token = Cookies.get('token');
+      const userInfo = localStorage.getItem("user");
+
+      if (!token || !userInfo) {
+        router.push('/System/login');
+        return;
+      }
+
+      // Verify user is admin
+      const userType = userInfo.split("#")[0];
+      if (userType !== 'admin') {
+        router.push('/System/login');
+        return;
+      }
+
+      setIsAuthenticated(true);
       try {
-        // Check session
-        if (typeof window === 'undefined' || !sessionStorage.getItem("sessionId")) {
-          router.push("/");
-          return;
-        }
-
-        const userType = sessionStorage.getItem("sessionId")?.split("#")[0];
-        if (userType !== 'admin') {
-          router.push("/");
-          return;
-        }
-
-        // Fetch data
-        const [coursesData, requestsData] = await Promise.all([
-          getCourses(),
+        setLoading(true);
+        const [coursesRes, usersRes, requestsRes] = await Promise.all([
+          getAllCourses(),
+          getUsers(),
           getPendingRequests()
         ]);
-
-        setCourses(coursesData);
-        setPendingRequests(requestsData);
-        setLoading(false);
+        setCourses(coursesRes || []);
+        setUsers(usersRes || []);
+        setPendingRequests(requestsRes || []);
       } catch (error) {
-        console.error('Error loading data:', error);
+        console.error("Error fetching data:", error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    checkAuth();
   }, [router]);
 
   const handleRequestAction = async (studentId, courseNumber, isApproved) => {
@@ -58,7 +71,7 @@ export default function AdminDashboard() {
       await handleRequest(studentId, courseNumber, isApproved);
       // Refresh data
       const [coursesData, requestsData] = await Promise.all([
-        getCourses(),
+        getAllCourses(),
         getPendingRequests()
       ]);
       setCourses(coursesData);
@@ -71,7 +84,7 @@ export default function AdminDashboard() {
   const handleToggleApproval = async (courseNumber, isOpen) => {
     try {
       await toggleCourseApproval(courseNumber, isOpen);
-      const updatedCourses = await getCourses();
+      const updatedCourses = await getAllCourses();
       setCourses(updatedCourses);
     } catch (error) {
       console.error('Error toggling approval:', error);
@@ -82,7 +95,7 @@ export default function AdminDashboard() {
     if (confirm('Are you sure you want to delete this course?')) {
       try {
         await deleteCourse(courseNumber);
-        const updatedCourses = await getCourses();
+        const updatedCourses = await getAllCourses();
         setCourses(updatedCourses);
       } catch (error) {
         console.error('Error deleting course:', error);
@@ -94,7 +107,7 @@ export default function AdminDashboard() {
     if (confirm(`Are you sure you want to ${isOpen ? 'approve' : 'reject'} ALL courses?`)) {
       try {
         await bulkUpdateCourses(isOpen);
-        const updatedCourses = await getCourses();
+        const updatedCourses = await getAllCourses();
         setCourses(updatedCourses);
         alert(`All courses have been ${isOpen ? 'approved' : 'rejected'}`);
       } catch (error) {
@@ -108,7 +121,7 @@ export default function AdminDashboard() {
       try {
         await bulkHandleRequests(isApproved);
         const [coursesData, requestsData] = await Promise.all([
-          getCourses(),
+          getAllCourses(),
           getPendingRequests()
         ]);
         setCourses(coursesData);
@@ -126,7 +139,22 @@ export default function AdminDashboard() {
     course.course_instructor.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-4">Loading...</h2>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, don't render anything (will be redirected by middleware)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -176,8 +204,12 @@ export default function AdminDashboard() {
                     <h3>{course.course_name}</h3>
                     <div className="course-meta">
                       <p><strong>Code:</strong> {course.course_number}</p>
-                      <p><strong>Instructor:</strong> {course.course_instructor}</p>
-                      <p><strong>Capacity:</strong> {course.registeredStudents}/{course.capacity}</p>
+                      <p><strong>Instructor:</strong> {
+                        users.find(user => user.username === course.course_instructor)?.name || 
+                        course.course_instructor || 
+                        'Not Assigned'
+                      }</p>
+                      <p><strong>Capacity:</strong> {course.registeredStudents || 0}/{course.capacity}</p>
                       <p><strong>Category:</strong> {course.category}</p>
                       <p><strong>Status:</strong> {course.isOpen ? '✅ Available' : '❌ Not Available'}</p>
                     </div>

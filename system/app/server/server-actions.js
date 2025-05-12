@@ -105,3 +105,7 @@ export async function getMostFailedCourse() {
 export async function getStudentCountPerInstructor() {
   return await systemRepo.getStudentCountPerInstructor();
 }
+
+export async function createCourse(courseData) {
+  return await systemRepo.createCourse(courseData);
+}

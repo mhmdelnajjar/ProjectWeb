@@ -1,4 +1,3 @@
-
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
@@ -432,6 +431,27 @@ async getStudentCountPerInstructor() {
   return map;
 }
 
+  async createCourse(courseData) {
+    try {
+      const course = await prisma.course.create({
+        data: {
+          course_number: courseData.course_number,
+          course_name: courseData.course_name,
+          category: courseData.category,
+          course_instructor: courseData.course_instructor,
+          capacity: courseData.capacity,
+          registeredStudents: courseData.registeredStudents,
+          isOpen: courseData.isOpen,
+          prerequisite: courseData.prerequisite,
+          image: courseData.image
+        }
+      });
+      return course;
+    } catch (error) {
+      console.error("❌ createCourse error:", error);
+      throw error;
+    }
+  }
 }
 
 export default new SystemRepo();

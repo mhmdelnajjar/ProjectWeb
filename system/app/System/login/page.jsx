@@ -1,51 +1,55 @@
 'use client'
-import styles from "@/app/style/page.module.css";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import styles from "@/app/style/page.module.css"
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { authenticateUser } from '@/app/actions/auth'
+import Cookies from 'js-cookie'
 
-export default function Page({ initailUsers}) {
-  const router = useRouter();
-  const [error, setError] = useState('');
+export default function Page() {
+  const router = useRouter()
+  const [error, setError] = useState('')
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    setError('');
-    
-    const formData = new FormData(e.target);
-    const { username, password } = Object.fromEntries(formData);
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const username = formData.get('username')
+    const password = formData.get('password')
 
-    // Validate inputs
     if (!username || !password) {
-      setError("Please enter both username and password");
-      return;
+      setError('Please fill in all fields')
+      return
     }
 
-   const user = initailUsers.find(u => {
- // Log the username
-  return u.username === username && u.password === password;
-});
+    try {
+      const result = await authenticateUser(username, password)
 
+      if (result.success) {
+        // Store in local storage
+        localStorage.setItem('user', `${result.user.userType}#${username}#${password}`)
 
-    if (!user) {
-      setError("Invalid username or password");
-      return;
-    }
-      sessionStorage.setItem('sessionId', `${user.userType}#${username}#${password}`);
+        // Store JWT token
+        Cookies.set('token', result.token, { expires: 1 }) // Expires in 1 day
 
-
-    // Redirect based on userType
-    switch(user.userType) {
-      case 'student':
-        router.push('/System/student');
-        break;
-      case 'instructor':
-        router.push('/System/instructor');
-        break;
-      case 'admin':
-        router.push('/System/admin');
-        break;
-      default:
-        setError("Unknown user type");
+        // Redirect based on user type
+        switch (result.user.userType) {
+          case 'student':
+            router.push('/System/student')
+            break
+          case 'instructor':
+            router.push('/System/instructor')
+            break
+          case 'admin':
+            router.push('/System/admin')
+            break
+          default:
+            setError('Invalid user type')
+        }
+      } else {
+        setError(result.error)
+      }
+    } catch (error) {
+      setError('An error occurred during login')
+      console.error('Login error:', error)
     }
   }
 
@@ -94,5 +98,5 @@ export default function Page({ initailUsers}) {
         <p>&copy; 2025 CSE Department</p>
       </footer>
     </div>
-  );
+  )
 }

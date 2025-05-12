@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import NavStudent from '@/app/components/NavStudent';
 import { useRouter } from "next/navigation";
-import { getCurrent, getPending, getCompleted, getAllCourses,updatePending } from '@/app/server/server-actions';
+import { getCurrent, getPending, getCompleted, getAllCourses, updatePending, getPendingRequests } from '@/app/server/server-actions';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 export default function Page() {
   const router = useRouter();
@@ -14,6 +15,8 @@ export default function Page() {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState([]);
 
   async function coursesGetter() {
     try {
@@ -25,29 +28,35 @@ export default function Page() {
     }
   }
 
-
   useEffect(() => {
-    if (typeof window !== 'undefined' && !sessionStorage.getItem("sessionId")) {
-      router.push("/");
-      return;
-    }
+    const checkAuth = async () => {
+      const token = Cookies.get('token');
+      const userInfo = localStorage.getItem("user");
 
-    const email = sessionStorage.getItem("sessionId")?.split("#")[1];
-    if (!email) return;
+      if (!token || !userInfo) {
+        router.push('/');
+        return;
+      }
 
-    const fetchAll = async () => {
+      const userType = userInfo.split("#")[0];
+      if (userType !== 'student') {
+        router.push('/');
+        return;
+      }
+
+      setIsAuthenticated(true);
       try {
         setLoading(true);
-        const [currRes, compRes, pendRes] = await Promise.all([
-          getCurrent(email),
-          getCompleted(email),
-          getPending(email)
+        const [coursesRes, currentRes, completedRes, pendingRes] = await Promise.all([
+          getAllCourses(),
+          getCurrent(userInfo.split("#")[1]),
+          getCompleted(userInfo.split("#")[1]),
+          getPending(userInfo.split("#")[1])
         ]);
-
-        setCurr(currRes || []);
-        setComp(compRes || []);
-        setPend(pendRes || []);
-        await coursesGetter();
+        setCourses(coursesRes || []);
+        setCurr(currentRes || []);
+        setComp(completedRes || []);
+        setPend(pendingRes || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -55,8 +64,25 @@ export default function Page() {
       }
     };
 
-    fetchAll();
+    checkAuth();
   }, [router]);
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-4">Loading...</h2>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, don't render anything (will be redirected by middleware)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   function handleDropDown(e) {
     const choice = e.target.value;
@@ -69,90 +95,105 @@ export default function Page() {
       setCourses(curr || []);
     }
   }
+
   async function handleRegister(course) {
-    const email = sessionStorage.getItem("sessionId")?.split("#")[1];
+    const email = localStorage.getItem("user")?.split("#")[1];
     if (!email) return;
 
     try {
-        // Check if already pending
-        if (pend.some(c => c.course_number === course.course_number)) {
-            alert("Registration already pending");
-            return;
-        }
+      // Check if already pending
+      if (pend.some(c => c.course_number === course.course_number)) {
+        alert("Registration already pending");
+        return;
+      }
 
-        // Add to pending
-        await updatePending(email, course.course_number);
-        
-        // Update local state
-        setPend([...pend, { course_number: course.course_number }]);
-        alert("Registration request submitted");
+      // Add to pending
+      await updatePending(email, course.course_number);
+      
+      // Update local state
+      setPend([...pend, { course_number: course.course_number }]);
+      alert("Registration request submitted");
     } catch (error) {
-        console.error("Registration failed:", error);
-        alert("Registration failed. Please try again.");
+      console.error("Registration failed:", error);
+      alert("Registration failed. Please try again.");
     }
-}
+  }
+
   function checkPreRequisite(courseNum, coursePrerequisite) {
     const passingGrades = ["A", "B", "C", "D"];
 
+    // Debug logging
+    console.log('Checking prerequisites for course:', courseNum);
+    console.log('Completed courses:', comp);
+    console.log('Current courses:', curr);
+    console.log('Pending courses:', pend);
+
     // 1. Check if already registered in current courses
     if (curr.some(c => c.course_number === courseNum)) {
-        return { status: false, text: "Already Registered" };
+      console.log('Course already in current courses');
+      return { status: false, text: "Already Registered" };
     }
 
     // 2. Check if pending approval
     if (pend.some(c => c.course_number === courseNum)) {
-        return { status: false, text: "Pending Approval" };
+      console.log('Course is pending approval');
+      return { status: false, text: "Pending Approval" };
     }
 
-    // 3. Check if completed with passing grade
+    // 3. Check if completed with any grade
     const completedCourse = comp.find(c => c.course_number === courseNum);
+    console.log('Found completed course:', completedCourse);
+    
     if (completedCourse) {
-        const grade = completedCourse.grade?.trim().toUpperCase();
-        if (grade && passingGrades.includes(grade)) {
-            return { status: false, text: "Already Completed" };
-        }
+      console.log('Course is already completed');
+      return { status: false, text: "Already Completed" };
     }
 
     // 4. Check prerequisites
     if (coursePrerequisite) {
-        const [prereqNum, minGrade] = coursePrerequisite.includes(":") 
-            ? coursePrerequisite.split(":") 
-            : [coursePrerequisite, "D"]; // Default to D if no grade specified
+      const [prereqNum, minGrade] = coursePrerequisite.includes(":") 
+        ? coursePrerequisite.split(":") 
+        : [coursePrerequisite, "D"]; // Default to D if no grade specified
 
-        const prereqCourse = comp.find(c => c.course_number === prereqNum);
-        
-        if (!prereqCourse) {
-            return { status: false, text: `Missing: ${prereqNum}` };
-        }
+      console.log('Checking prerequisite:', prereqNum, 'with minimum grade:', minGrade);
 
-        const prereqGrade = prereqCourse.grade?.trim().toUpperCase();
-        if (!prereqGrade) {
-            return { status: false, text: `${prereqNum} Not Graded` };
-        }
+      const prereqCourse = comp.find(c => c.course_number === prereqNum);
+      
+      if (!prereqCourse) {
+        console.log('Prerequisite course not found');
+        return { status: false, text: `Missing: ${prereqNum}` };
+      }
 
-        // Grade comparison
-        const gradeOrder = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
-        const requiredGrade = minGrade?.trim().toUpperCase() || 'D';
-        
-        if (!(prereqGrade in gradeOrder) || !(requiredGrade in gradeOrder)) {
-            return { status: false, text: "Invalid Grade" };
-        }
+      const prereqGrade = prereqCourse.grade?.trim().toUpperCase();
+      if (!prereqGrade) {
+        console.log('Prerequisite course not graded');
+        return { status: false, text: `${prereqNum} Not Graded` };
+      }
 
-        if (gradeOrder[prereqGrade] < gradeOrder[requiredGrade]) {
-            return { status: false, text: `${prereqNum} Grade Too Low` };
-        }
+      // Grade comparison
+      const gradeOrder = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
+      const requiredGrade = minGrade?.trim().toUpperCase() || 'D';
+      
+      if (!(prereqGrade in gradeOrder) || !(requiredGrade in gradeOrder)) {
+        console.log('Invalid grade format');
+        return { status: false, text: "Invalid Grade" };
+      }
+
+      if (gradeOrder[prereqGrade] < gradeOrder[requiredGrade]) {
+        console.log('Prerequisite grade too low');
+        return { status: false, text: `${prereqNum} Grade Too Low` };
+      }
     }
 
     // 5. Check course capacity
     const targetCourse = courses.find(c => c.course_number === courseNum);
     if (targetCourse && targetCourse.registeredStudents >= targetCourse.capacity) {
-        return { status: false, text: "Course Full" };
+      console.log('Course is full');
+      return { status: false, text: "Course Full" };
     }
 
+    console.log('Course is available for registration');
     return { status: true, text: "Register" };
-}
-if (loading) {
-    return <div>Loading...</div>;
   }
 
   return (
@@ -172,9 +213,7 @@ if (loading) {
               href="/System/student" 
               onClick={() => {setBool(true)
                 coursesGetter()
-              
               }}
-            
             >
               REGISTER
             </Link>
@@ -245,19 +284,19 @@ if (loading) {
                     </div>
                     <br />
                     {bool && (
-    result.status ? (
-        <button 
-            className="btn-register"
-            onClick={() => handleRegister(course)}
-        >
-            Register
-        </button>
-    ) : (
-        <span className="registration-status">
-            {result.text}
-        </span>
-    )
-)}
+                      result.status ? (
+                        <button 
+                          className="btn-register"
+                          onClick={() => handleRegister(course)}
+                        >
+                          Register
+                        </button>
+                      ) : (
+                        <span className="registration-status">
+                          {result.text}
+                        </span>
+                      )
+                    )}
                   </div>
                 );
               })}
